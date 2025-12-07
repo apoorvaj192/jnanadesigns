@@ -25,11 +25,13 @@
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px}
     .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 
+    /* BRAND TITLE */
     h1{
       margin:0;
       font-size:26px;
       font-weight:600;
       letter-spacing:0.2px;
+      white-space:nowrap;
     }
 
     .jnana{
@@ -45,36 +47,37 @@
       margin-left:2px;
     }
 
-    /* Brandline to hold Jnana + Designs */
+    /* Keep title in one line */
     .brandline{
-    display:inline-flex;
-    align-items:flex-end;
-    gap:6px;
-    flex-wrap:nowrap; /* prevents splitting lines */
-    white-space:nowrap; /* absolutely forces one line */
+      display:inline-flex;
+      align-items:flex-end;
+      gap:6px;
+      flex-wrap:nowrap;
+      white-space:nowrap;
     }
-    }
-    /* Pastel highlighted tagline */
+
+    /* ROUGH MARKER HIGHLIGHT */
     .highlight-tagline{
-    font-size:13px;
-    display:inline-block;
-    margin-top:6px;
-    font-weight:500;
-    color:#333;
+      font-size:13px;
+      font-weight:500;
+      color:#333;
+      display:inline-block;
+      margin-top:6px;
 
-    /* soft highlighter yellow */
-    background:#FFF7A6;
+      /* marker yellow */
+      background:#FFF7A6;
 
-    /* rough edges */
-    padding:4px 6px 3px 6px;
-    box-shadow:
-    inset 0 -8px 0 0 #FFF29D,
-    inset 0 -10px 0 0 #FFF29D;
+      /* rough lower stroke */
+      padding:4px 6px 3px 6px;
+      box-shadow:
+        inset 0 -8px 0 0 #FFF29D,
+        inset 0 -12px 0 0 #FFF29D;
 
-    /* slightly messy mask so it's not a clean rectangle */
-    -webkit-mask-image: radial-gradient(circle at 20% 40%, black 99%, transparent 100%);
-    mask-image: radial-gradient(circle at 20% 40%, black 99%, transparent 100%);
+      /* slightly organic mask shape */
+      -webkit-mask-image: radial-gradient(circle at 20% 40%, black 99%, transparent 100%);
+      mask-image: radial-gradient(circle at 20% 40%, black 99%, transparent 100%);
     }
+
     .ctas{display:flex;gap:10px}
     .btn{font-size:13px;padding:8px 12px;border-radius:8px;border:1px solid #e6e6e6;background:#fff;text-decoration:none;color:inherit}
     .btn.primary{background:var(--accent);color:#fff;border-color:rgba(11,102,255,0.9)}
