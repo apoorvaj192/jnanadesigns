@@ -8,7 +8,7 @@
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,500&display=swap">
   <style>
-    /* ---------- Polished Option C: Editorial / Teal-tinted ---------- */
+    /* ---------- Polished Option C: Editorial / Teal-tinted (with search + image fixes) ---------- */
     :root{
       --maxw:980px;
       --bg:#ffffff;
@@ -27,7 +27,7 @@
       position:sticky;
       top:0;
       backdrop-filter: blur(6px);
-      background:#f5f3ef;
+      background:#f3fafa;
       border-bottom:1px solid rgba(11,110,110,0.08);
       z-index:50;
     }
@@ -220,24 +220,50 @@
   // Set year
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  /* ------------------------
+     Normalization helpers for search
+     ------------------------ */
+  function normalizeForSearch(s){
+    if(!s) return '';
+    // Prefer Unicode-aware replacement; fallback if unsupported
+    try {
+      // Replace non-letter/number with space, collapse spaces
+      return s.toLowerCase()
+              .replace(/[^\p{L}\p{N}]+/gu, ' ')
+              .replace(/\s+/g, ' ')
+              .trim();
+    } catch(e) {
+      return s.toLowerCase()
+              .replace(/[^a-z0-9]+/gi, ' ')
+              .replace(/\s+/g, ' ')
+              .trim();
+    }
+  }
+
   // Visibility update used by filters + search
   function updateVisibility(){
     const active = document.querySelector('.filters button.active');
     const f = active ? active.getAttribute('data-filter') : 'all';
-    const q = (document.getElementById('search').value || '').toLowerCase().trim();
+    const rawQ = (document.getElementById('search').value || '').toLowerCase();
+    const normQ = normalizeForSearch(rawQ);
+
     document.getElementById('tagline').textContent = {
       all: "A full overview of my scientific design work.",
       figure: "Publication-ready scientific visuals with clarity and precision",
       abstract: "The soul of witty science",
       poster: "Impactful science communicated in the span of a tea break",
       presentation: "Crucial instruments of storytelling",
-      btw: "Behind The Work; Notes on teh scientific process, creativity, and design decisions."
+      btw: "Behind The Work; Notes on the scientific process, creativity, and design decisions."
     }[f] || '';
 
     document.querySelectorAll('.card').forEach(card=>{
       const matchesFilter = (f === 'all' || card.dataset.type === f);
-      const text = card.innerText.toLowerCase();
-      const matchesSearch = q === '' ? true : text.includes(q);
+
+      const rawText = card.innerText || '';
+      const normText = normalizeForSearch(rawText);
+
+      const matchesSearch = (normQ === '') ? true : normText.includes(normQ);
+
       card.style.display = (matchesFilter && matchesSearch) ? 'flex' : 'none';
     });
   }
@@ -254,7 +280,7 @@
   // search behavior
   document.getElementById('search').addEventListener('input', updateVisibility);
 
-  // lightbox
+  // Lightbox attach for static cards
   function attachLightbox(){
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lb-img');
@@ -280,18 +306,28 @@
   const repo = 'jnanadesigns';
   const issuesUrl = `https://api.github.com/repos/${owner}/${repo}/issues?state=open&per_page=200`;
 
-  // Helpers
+  // Robust image extractor: supports Markdown and HTML <img> tags
   function extractImages(md){
     if(!md) return [];
-    const regex = /!\[.*?\]\((https?:\/\/[^\s)]+)\)/gi;
-    const arr = [];
+    const imgs = [];
+
+    // 1) Markdown image syntax: ![alt](https://...)
+    const mdRegex = /!\[.*?\]\((https?:\/\/[^\s)]+)\)/gi;
     let m;
-    while((m = regex.exec(md)) !== null) arr.push(m[1]);
-    return arr;
+    while((m = mdRegex.exec(md)) !== null) imgs.push(m[1]);
+
+    // 2) HTML <img ... src="..."> tags (fallback)
+    const htmlImgRegex = /<img[^>]+src=(?:'|")([^'"]+)(?:'|")[^>]*>/gi;
+    while((m = htmlImgRegex.exec(md)) !== null){
+      if(!imgs.includes(m[1])) imgs.push(m[1]);
+    }
+
+    return imgs;
   }
   function firstParagraph(md){
     if(!md) return '';
     let text = md.replace(/!\[.*?\]\((https?:\/\/[^\s)]+)\)/gi, '');
+    text = text.replace(/<img[^>]+>/gi, ' '); // remove inline <img> html
     text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
     const parts = text.split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean);
     return parts.length ? parts[0] : text.trim().split('\n').slice(0,3).join(' ').trim();
