@@ -6,7 +6,7 @@
   <title>Apoorva Jnana — JnanaDesigns</title>
   <meta name="description" content="Scientific graphic design portfolio by Apoorva Jnana. Publication-ready figures, visual abstracts, posters, presentations, and design insights.">
 
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap">
 
   <style>
@@ -25,57 +25,72 @@
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px}
     .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 
-    /* BRAND TITLE */
+    /* BRAND TITLE - baseline aligned and sized */
     h1{
       margin:0;
-      font-size:26px;
+      font-size:28px;
       font-weight:600;
       letter-spacing:0.2px;
-      white-space:nowrap;
+      line-height:1;
     }
 
     .jnana{
       font-family:"Poppins", sans-serif;
       font-weight:600;
+      font-size:28px;
+      line-height:1;
+      display:inline-block;
     }
 
     .designs{
       font-family:"Playfair Display", serif;
       font-weight:500;
       font-style:italic;
-      letter-spacing:0.2px;
-      margin-left:2px;
+      font-size:22px;       /* slightly smaller so the x-height aligns visually */
+      line-height:1;
+      margin-left:6px;
+      transform: translateY(1px); /* fine vertical nudge for visual alignment */
+      display:inline-block;
     }
 
-    /* Keep title in one line */
+    /* Force them to stay on the same line and align on baseline */
     .brandline{
       display:inline-flex;
-      align-items:flex-end;
+      align-items:baseline;  /* baseline alignment is key */
       gap:6px;
       flex-wrap:nowrap;
       white-space:nowrap;
     }
 
-    /* ROUGH MARKER HIGHLIGHT */
+    /* ROUGH MARKER HIGHLIGHT - SVG-backed for organic edges */
     .highlight-tagline{
+      position:relative;
+      display:inline-block;
+      padding:6px 8px;
       font-size:13px;
       font-weight:500;
       color:#333;
-      display:inline-block;
+      line-height:1.2;
       margin-top:6px;
+      z-index:1;
+      background:transparent; /* actual painted stroke is in ::before */
+    }
 
-      /* marker yellow */
-      background:#FFF7A6;
-
-      /* rough lower stroke */
-      padding:4px 6px 3px 6px;
-      box-shadow:
-        inset 0 -8px 0 0 #FFF29D,
-        inset 0 -12px 0 0 #FFF29D;
-
-      /* slightly organic mask shape */
-      -webkit-mask-image: radial-gradient(circle at 20% 40%, black 99%, transparent 100%);
-      mask-image: radial-gradient(circle at 20% 40%, black 99%, transparent 100%);
+    .highlight-tagline::before{
+      content:"";
+      position:absolute;
+      left:-8px;
+      right:-8px;
+      top:0;
+      bottom:0;
+      z-index:-1;
+      /* small organic SVG used as background to create a hand-drawn stroke */
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 48' preserveAspectRatio='none'><path d='M0 14 C80 6 180 10 300 12 C420 14 520 8 640 14 C760 20 820 12 800 16 L800 48 L0 48 Z' fill='%23FFF7A6' /></svg>");
+      background-repeat:no-repeat;
+      background-size:100% 100%;
+      transform: translateY(3px) scaleY(1.04);
+      filter: blur(0.1px);
+      pointer-events:none;
     }
 
     .ctas{display:flex;gap:10px}
@@ -148,6 +163,13 @@
       color:var(--muted);
       font-size:13px;
     }
+
+    /* small responsive tweak so the header stacks nicely on very small screens */
+    @media (max-width:420px){
+      h1{font-size:22px}
+      .jnana{font-size:22px}
+      .designs{font-size:18px}
+    }
   </style>
 </head>
 
@@ -202,35 +224,35 @@
 
       <article class="card" data-type="figure">
         <p class="title">Pyocyanin figure</p>
-        <img class="thumb" src="images/figure1.jpg" loading="lazy">
+        <img class="thumb" src="images/figure1.jpg" loading="lazy" alt="">
         <p class="cap">Designed layout + final art. <a href="#" target="_blank">Published</a></p>
         <p class="tools">Illustrator, BioRender</p>
       </article>
 
       <article class="card" data-type="abstract">
         <p class="title">Visual abstracts: the soul of witty science</p>
-        <img class="thumb" src="images/visualabstract1.png" loading="lazy">
+        <img class="thumb" src="images/visualabstract1.png" loading="lazy" alt="">
         <p class="cap">Single-panel visual story for manuscript. <a href="#" target="_blank">Published</a></p>
         <p class="tools">Illustrator</p>
       </article>
 
       <article class="card" data-type="poster">
         <p class="title">Posters: Ticket to knowledge and conference swag</p>
-        <img class="thumb" src="images/poster1.jpg" loading="lazy">
+        <img class="thumb" src="images/poster1.jpg" loading="lazy" alt="">
         <p class="cap">Poster layout with microscopy panels.</p>
         <p class="tools">Inkscape, Illustrator</p>
       </article>
 
       <article class="card" data-type="presentation">
         <p class="title">Presentation: Microsoft FTW</p>
-        <img class="thumb" src="images/presentation1.jpg" loading="lazy">
+        <img class="thumb" src="images/presentation1.jpg" loading="lazy" alt="">
         <p class="cap">Slide design for research talk. <a href="#" target="_blank">View</a></p>
         <p class="tools">Presentation design</p>
       </article>
 
       <article class="card" data-type="btw">
         <p class="title">Logbook: insights and commentary on art + science</p>
-        <img class="thumb" src="images/btw1.jpg" loading="lazy">
+        <img class="thumb" src="images/btw1.jpg" loading="lazy" alt="">
         <p class="cap">Short insights on figure clarity. <a href="#" target="_blank">Read</a></p>
         <p class="tools">Behind The Work</p>
       </article>
@@ -241,7 +263,7 @@
 </main>
 
 <div id="lightbox">
-  <img id="lb-img" src="">
+  <img id="lb-img" src="" alt="">
 </div>
 
 <footer>
