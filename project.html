@@ -5,262 +5,306 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>JnanaDesigns — Project</title>
   <meta name="description" content="Project details — JnanaDesigns">
+
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,500&display=swap">
-  <!-- marked + DOMPurify for Markdown rendering + sanitization -->
+
+  <!-- marked.js + DOMPurify -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
 
   <style>
     :root{
       --maxw:980px;
-      --muted:#586066;
-      --accent:#0B6E6E;      /* teal accent consistent with main page */
-      --accent-strong:#0a5c5c;
+      --muted:#444;
+      --accent:#0B6E6E; 
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
 
-    html,body{height:100%}
-    body{margin:0;background:#fff;color:#111;-webkit-font-smoothing:antialiased}
-    .wrap{max-width:var(--maxw);margin:28px auto;padding:0 18px}
+    body{
+      margin:0;
+      background:#fff;
+      color:#111;
+      -webkit-font-smoothing:antialiased;
+    }
 
-    /* Top row - back button on left */
-    .top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:6px}
+    .wrap{
+      max-width:var(--maxw);
+      margin:28px auto;
+      padding:0 18px;
+    }
+
+    /* Back button */
+    .top-row{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      margin-bottom:6px;
+    }
     .back{
-      display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;border:1px solid #eee;
-      background:#fafafa;text-decoration:none;color:inherit;font-size:14px;transition:all 120ms ease;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:8px;
+      background:#fafafa;
+      border:1px solid #eee;
+      font-size:14px;
+      text-decoration:none;
+      color:inherit;
+      transition:background 160ms ease, border 160ms ease;
     }
     .back:hover{
-      background: rgba(11,110,110,0.06);
-      border-color: rgba(11,110,110,0.14);
+      background:rgba(11,110,110,0.06);
+      border-color:rgba(11,110,110,0.14);
     }
 
-    /* Centered brand + title block */
+    /* CENTERED BRAND */
     .brand-block{
       display:flex;
       flex-direction:column;
       align-items:center;
       text-align:center;
-      margin-bottom:16px;
-      padding-top:8px;
-      border-bottom:2px solid rgba(11,110,110,0.12); /* subtle teal divider */
-      padding-bottom:14px;
+      margin-top:6px;
+      margin-bottom:6px;
     }
 
-    /* Brand heading shown as one word (two fonts) */
-    #brand {
+    #brand{
       margin:0;
-      font-size:32px;
-      display:inline-flex;       /* inline-flex so it hugs content */
+      display:inline-flex;
       align-items:baseline;
       justify-content:center;
       letter-spacing:0;
       line-height:1;
+      font-size:32px;
     }
-    .jnana {
+
+    .jnana{
       font-family:"Poppins",sans-serif;
       font-weight:600;
       color:#1f2a2a;
       font-size:32px;
-      padding-right:0;
-      margin-right:0;
+      margin:0;
+      padding:0;
     }
-    .designs {
+
+    .designs{
       font-family:"Playfair Display",serif;
       font-weight:500;
       font-style:italic;
       color:#1f2a2a;
       font-size:32px;
-      padding-left:0;
-      margin-left:0;
+      margin:0;
+      padding:0;
     }
 
-    /* Project title right under brand (teal) */
-    #post-title {
-      margin:12px 0 6px;
+    /* TITLE + META LEFT-ALIGNED */
+    .title-block{
+      width:100%;
+      text-align:left;
+      margin-top:14px;
+      margin-bottom:8px;
+    }
+
+    #post-title{
       font-family:"Poppins",sans-serif;
+      margin:0 0 6px;
       font-size:20px;
       font-weight:600;
-      color:var(--accent);
+      color:#1f2a2a;
     }
 
-    .meta{color:var(--accent);opacity:0.8;margin:6px 0 18px;font-size:14px}
+    .meta{
+      margin:0 0 16px;
+      font-size:14px;
+      color:#444;
+      opacity:0.9;
+    }
 
-    /* Content box */
+    /* CONTENT AREA */
     .content{
       background:#fff;
       padding:18px;
       border-radius:10px;
-      border:1px solid rgba(11,110,110,0.08);
-      color:#222;
+      border:1px solid rgba(0,0,0,0.06);
     }
-    .content p{line-height:1.6;margin:0 0 12px}
-    .content img{max-width:100%;height:auto;border-radius:8px;display:block;margin:12px 0;cursor:zoom-in}
-    .content pre{background:#f7f7f7;padding:12px;border-radius:8px;overflow:auto}
-    .content a{color:var(--accent); text-decoration:underline;}
-    .content a:hover{color:var(--accent-strong)}
 
-    /* Lightbox */
-    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);align-items:center;justify-content:center;padding:18px;z-index:9999}
-    #lightbox img{max-width:calc(100% - 40px);max-height:90vh;border-radius:8px;box-shadow:0 20px 50px rgba(0,0,0,0.6)}
-    #lightbox .caption{color:#fff;margin-top:10px;font-family:'Playfair Display',serif;text-align:center}
+    .content p{
+      line-height:1.6;
+      margin-bottom:12px;
+    }
 
-    @media (max-width:640px){
-      #brand{font-size:22px}
-      .jnana{font-size:22px}
-      .designs{font-size:22px}
-      .wrap{margin:16px auto;padding:0 12px}
-      #post-title{font-size:18px}
+    .content img{
+      max-width:100%;
+      border-radius:8px;
+      display:block;
+      margin:14px 0;
+      cursor:zoom-in;
+    }
+
+    .content a{
+      color:var(--accent);
+      text-decoration:underline;
+    }
+    .content a:hover{
+      color:#084f4f;
+    }
+
+    /* LIGHTBOX */
+    #lightbox{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.78);
+      padding:18px;
+      z-index:9999;
+      align-items:center;
+      justify-content:center;
+    }
+
+    #lightbox img{
+      max-width:calc(100% - 40px);
+      max-height:90vh;
+      border-radius:8px;
+      box-shadow:0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    #lb-caption{
+      color:#fff;
+      margin-top:10px;
+      font-family:"Playfair Display",serif;
+      text-align:center;
+    }
+
+    @media(max-width:640px){
+      #brand{font-size:22px;}
+      .jnana{font-size:22px;}
+      .designs{font-size:22px;}
+      #post-title{font-size:18px;}
+      .wrap{padding:0 12px;}
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
+
     <div class="top-row">
-      <a class="back" href="./" aria-label="Back to portfolio">← Back</a>
-      <div style="width:56px"></div> <!-- spacer to preserve alignment -->
+      <a class="back" href="./">← Back</a>
+      <div style="width:56px;"></div> <!-- spacing placeholder -->
     </div>
 
-    <!-- Centered brand block: brand, then project title, then meta -->
-    <div class="brand-block" role="banner" aria-label="Brand and project title">
-      <h1 id="brand" aria-hidden="true">
+    <!-- Centered brand -->
+    <div class="brand-block">
+      <h1 id="brand">
         <span class="jnana">Jnana</span><span class="designs">Designs</span>
       </h1>
-
-      <!-- Project title populated by JS -->
-      <h2 id="post-title" aria-live="polite"></h2>
-
-      <div id="meta" class="meta">Loading...</div>
     </div>
 
-    <div id="content" class="content" aria-live="polite">Loading project…</div>
+    <!-- Left-aligned title + meta -->
+    <div class="title-block">
+      <h2 id="post-title"></h2>
+      <div id="meta" class="meta"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="content" class="content">Loading project…</div>
   </div>
 
-  <!-- lightbox -->
-  <div id="lightbox" role="dialog" aria-hidden="true">
+  <!-- LIGHTBOX -->
+  <div id="lightbox">
     <div style="text-align:center">
-      <img id="lb-img" src="" alt="">
-      <div id="lb-caption" class="caption"></div>
+      <img id="lb-img" src="">
+      <div id="lb-caption"></div>
     </div>
   </div>
 
 <script>
-/* Utility: read query param ?issue=NNN */
 function getQueryParam(name){
-  const params = new URLSearchParams(location.search);
-  return params.get(name);
+  return new URLSearchParams(location.search).get(name);
 }
 
-/* Render Markdown safely:
-   - Convert HTML <img> -> markdown image tokens so marked will render them
-   - Convert plain image URLs on their own line -> markdown images
-   - Use marked.js to render
-   - Sanitize with DOMPurify (allow only necessary tags/attrs)
-*/
 function renderBodyToHtml(md){
-  if(!md) return '';
+  if(!md) return "";
 
   let body = md;
 
-  // Convert HTML <img ... src="..."> to markdown image
-  body = body.replace(/<img[^>]+src=(?:'|")([^'"]+)(?:'|")[^>]*>/gi, function(_, src){
-    return `![](${src})`;
-  });
+  // Convert HTML <img> → markdown images
+  body = body.replace(/<img[^>]+src=(?:'|")([^'"]+)(?:'|")[^>]*>/gi,
+      (_, src)=> `![](${src})`);
 
-  // Convert plain image URLs on a line to markdown image token
-  body = body.replace(/(^|\n)(https?:\/\/\S+\.(?:png|jpe?g|gif|webp|svg))(\s|$)/gi, '\n![]($2)\n');
+  // Convert plain image URLs to markdown images
+  body = body.replace(/(^|\n)(https?:\/\/\S+\.(png|jpe?g|gif|webp|svg))(\s|$)/gi,
+      "\n![]($2)\n");
 
-  // Render markdown to HTML
   const rendered = marked.parse(body);
 
-  // Sanitize
-  const clean = DOMPurify.sanitize(rendered, {
-    ALLOWED_TAGS: ['a','p','img','strong','em','ul','ol','li','pre','code','blockquote','h1','h2','h3','br'],
-    ALLOWED_ATTR: ['href','src','alt','title','target','rel']
+  return DOMPurify.sanitize(rendered, {
+    ALLOWED_TAGS: ["a","p","img","strong","em","ul","ol","li","pre","code","blockquote","h1","h2","h3","br"],
+    ALLOWED_ATTR: ["href","src","alt","title","target","rel"]
   });
-
-  return clean;
 }
 
-/* Lightbox handlers */
-const lb = document.getElementById('lightbox');
-const lbImg = document.getElementById('lb-img');
-const lbCaption = document.getElementById('lb-caption');
+const lb = document.getElementById("lightbox");
+const lbImg = document.getElementById("lb-img");
+const lbCap = document.getElementById("lb-caption");
 
 function openLightbox(src, caption){
   lbImg.src = src;
-  lbImg.alt = caption || '';
-  lbCaption.textContent = caption || '';
-  lb.style.display = 'flex';
-  lb.setAttribute('aria-hidden','false');
-  lb.focus();
+  lbCap.textContent = caption || "";
+  lb.style.display = "flex";
 }
 
 function closeLightbox(){
-  lb.style.display = 'none';
-  lb.setAttribute('aria-hidden','true');
-  lbImg.src = '';
-  lbCaption.textContent = '';
+  lb.style.display = "none";
+  lbImg.src = "";
 }
 
-lb.addEventListener('click', (e)=>{
+lb.addEventListener("click", e=>{
   if(e.target === lb || e.target === lbImg) closeLightbox();
 });
-
-document.addEventListener('keydown', (e)=>{
-  if(lb.style.display === 'flex' && e.key === 'Escape') closeLightbox();
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape" && lb.style.display === "flex") closeLightbox();
 });
 
-/* Render issue onto the page */
-function showIssue(issue){
-  // post title under brand
-  document.getElementById('post-title').textContent = issue.title || '';
-
-  // meta
-  const created = new Date(issue.created_at).toLocaleDateString();
-  const labels = (issue.labels||[]).map(l=>l.name).join(', ');
-  document.getElementById('meta').textContent = `Published: ${created}${labels ? ' • Tags: ' + labels : ''}`;
-
-  const html = renderBodyToHtml(issue.body || '');
-  document.getElementById('content').innerHTML = html || '<p>(No description)</p>';
-
-  // Attach click handlers to images inside content for lightbox
-  document.querySelectorAll('#content img').forEach(img => {
-    img.style.cursor = 'zoom-in';
-    img.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      const captionText = (img.alt && img.alt !== '') ? img.alt : (img.title || '');
-      openLightbox(img.src, captionText);
-    });
-  });
-}
-
-/* Fetch issue data and show */
 async function loadIssue(){
-  const issueNum = getQueryParam('issue');
+  const issueNum = getQueryParam("issue");
   if(!issueNum){
-    document.getElementById('content').innerHTML = '<p>No issue specified.</p>';
-    document.getElementById('meta').textContent = '';
+    document.getElementById("content").textContent = "No issue specified.";
     return;
   }
-  const owner = 'apoorvaj192';
-  const repo = 'jnanadesigns';
+
+  const owner = "apoorvaj192";
+  const repo = "jnanadesigns";
   const url = `https://api.github.com/repos/${owner}/${repo}/issues/${issueNum}`;
 
-  try {
+  try{
     const res = await fetch(url);
-    if(!res.ok) throw new Error('Failed to fetch issue: ' + res.status);
     const issue = await res.json();
-    document.title = `JnanaDesigns — ${issue.title || 'Project'}`;
-    showIssue(issue);
-  } catch(err){
-    console.error(err);
-    document.getElementById('content').innerHTML = '<p style="color:#c33">Unable to load project. Check console for details.</p>';
-    document.getElementById('meta').textContent = '';
+
+    document.title = `JnanaDesigns — ${issue.title}`;
+    document.getElementById("post-title").textContent = issue.title;
+
+    const date = new Date(issue.created_at).toLocaleDateString();
+    const labels = issue.labels?.map(l => l.name).join(", ") || "";
+    document.getElementById("meta").textContent =
+      `Published: ${date}${labels ? " • Tags: " + labels : ""}`;
+
+    const html = renderBodyToHtml(issue.body);
+    document.getElementById("content").innerHTML = html;
+
+    // attach lightbox handlers
+    document.querySelectorAll("#content img").forEach(img=>{
+      img.addEventListener("click", ()=>{
+        openLightbox(img.src, img.alt || "");
+      });
+    });
+
+  }catch(e){
+    document.getElementById("content").textContent = "Error loading project.";
   }
 }
 
-/* Initialize */
 loadIssue();
 </script>
 </body>
