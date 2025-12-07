@@ -350,24 +350,17 @@ searchInput.addEventListener('input', ()=>{
       const caption = extractFirstParagraph(bodyMd) || '';
       const image = extractImageFromMarkdown(bodyMd); // might be null
       const url = issue.html_url; // link to the issue for "Read more"
-// Build card element
-const art = document.createElement('article');
-art.className = 'card';
-art.dataset.type = type;
 
-// Make whole card clickable (but ignore clicks on links)
-art.style.cursor = 'pointer';
-art.addEventListener('click', (e) => {
-  // if click happened inside any <a>, let the link handle it
-  if (e.target.closest && e.target.closest('a')) return;
-  window.location.href = `./project.html?issue=${issueNumber}`;
-});
+      // Build card element
+      const art = document.createElement('article');
+      art.className = 'card';
+      art.dataset.type = type;
 
-// Title (clickable)
+      // Title (clickable)
 const titleEl = document.createElement('p');
 titleEl.className = 'title';
 const titleLink = document.createElement('a');
-titleLink.href = `./project.html?issue=${issueNumber}`;
+titleLink.href = `./project.html?issue=${issue.number}`;
 titleLink.textContent = title;
 titleLink.style.color = 'inherit';
 titleLink.style.textDecoration = 'none';
@@ -375,66 +368,44 @@ titleLink.style.display = 'inline-block';
 titleEl.appendChild(titleLink);
 art.appendChild(titleEl);
 
-// Image (if found)
-if (image) {
-  const img = document.createElement('img');
-  img.className = 'thumb';
-  img.src = image;
-  img.alt = title;
-  img.loading = 'lazy';
-  art.appendChild(img);
-}
 
-// Caption block
-const cap = document.createElement('p');
-cap.className = 'cap';
-if (caption) {
-  cap.textContent = caption;
+      // Image (if found)
+      if(image){
+        const img = document.createElement('img');
+        img.className = 'thumb';
+        img.src = image;
+        img.alt = title;
+        img.loading = 'lazy';
+        art.appendChild(img);
+      }
 
-  // Read link opens inside site (same tab)
-  const readLink = document.createElement('a');
-  readLink.href = `./project.html?issue=${issueNumber}`;
-  readLink.target = '_self';
-  readLink.rel = 'noopener';
-  readLink.textContent = ' Read';
+      // Caption block
+      const cap = document.createElement('p');
+      cap.className = 'cap';
+      if(caption){
+        // If issue has a link inside body and you want to link "Read", keep plain caption and add link
+        const readLink = document.createElement('a');
+        readLink.href = `./project.html?issue=${issue.number}`;
+        readLink.target = '_blank';
+        readLink.rel = 'noopener';
+        readLink.textContent = ' Read';
+        // set text to caption and append read link
+        cap.textContent = caption;
+        cap.appendChild(document.createTextNode(' '));
+        cap.appendChild(readLink);
+      } else {
+        cap.innerHTML = `<a href="${url}" target="_blank" rel="noopener">Open</a>`;
+      }
+      art.appendChild(cap);
 
-  cap.appendChild(document.createTextNode(' '));
-  cap.appendChild(readLink);
-} else {
-  cap.innerHTML = `<a href="./project.html?issue=${issueNumber}" target="_self" rel="noopener">Open</a>`;
-}
-art.appendChild(cap);
+      // Tools / footer small text - optional: first label or created date
+      const tools = document.createElement('p');
+      tools.className = 'tools';
+      tools.textContent = (labelNames.length>0 ? labelNames.join(', ') : '') + ' ';
+      art.appendChild(tools);
 
-// Tools / footer small text - optional: first label or created date
-const tools = document.createElement('p');
-tools.className = 'tools';
-tools.textContent = (labelNames.length > 0 ? labelNames.join(', ') : '') + ' ';
-art.appendChild(tools);
-
-// Tags / chips (optional: other labels)
-if (Array.isArray(labelNames)) {
-  const others = labelNames.filter(l => !['figure','abstract','poster','presentation','btw','featured'].includes(l));
-  if (others.length) {
-    const tagsDiv = document.createElement('div');
-    tagsDiv.className = 'labels';
-    tagsDiv.innerHTML = others.map(t => `<span style="display:inline-block;background:#f1f1f1;padding:4px 8px;border-radius:999px;margin-right:6px;font-size:12px;color:#333;text-transform:capitalize">${t}</span>`).join('');
-    art.appendChild(tagsDiv);
-  }
-}
-
-// Visually mark featured (optional)
-if (labelNames.includes('featured')) {
-  const feat = document.createElement('div');
-  feat.style.fontSize = '12px';
-  feat.style.color = '#b36e00';
-  feat.style.marginTop = '6px';
-  feat.textContent = '★ Featured';
-  art.appendChild(feat);
-}
-
-// Finally add card to grid
-grid.appendChild(art);
-     
+      grid.appendChild(art);
+    }
 
     // Now re-run the existing filter setup (in case filters already exist)
     (function attachFilters(){
