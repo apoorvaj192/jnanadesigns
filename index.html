@@ -47,12 +47,13 @@
 
     /* Brandline to hold Jnana + Designs */
     .brandline{
-      display:flex;
-      align-items:flex-end;
-      gap:8px;
-      flex-wrap:wrap;
+    display:inline-flex;
+    align-items:flex-end;
+    gap:6px;
+    flex-wrap:nowrap; /* prevents splitting lines */
+    white-space:nowrap; /* absolutely forces one line */
     }
-
+    }
     /* Pastel highlighted tagline */
     .highlight-tagline{
       font-size:13px;
