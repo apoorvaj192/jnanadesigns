@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Apoorva Jnana — Scientific Graphic Design</title>
+  <meta name="description" content="Apoorva Jnana - scientific graphic designer. Publication-ready figures, visual abstracts, and presentation graphics." />
+  <style>
+    :root{
+      --maxw:980px;
+      --bg:#fbfbfb;
+      --card:#fff;
+      --muted:#666;
+      --accent:#0b66ff;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:#111;line-height:1.45;-webkit-font-smoothing:antialiased}
+    header{position:sticky;top:0;backdrop-filter: blur(4px);background:rgba(255,255,255,0.98);border-bottom:1px solid #e9e9e9;z-index:50}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{margin:0;font-size:18px;font-weight:600}
+    .ctas{display:flex;gap:10px;align-items:center}
+    .btn{font-size:13px;padding:8px 12px;border-radius:8px;border:1px solid #e6e6e6;background:#fff;cursor:pointer;text-decoration:none;color:inherit}
+    .btn.primary{background:var(--accent);color:#fff;border-color:rgba(11,102,255,0.9)}
+    .hero{padding:14px 0 8px;color:var(--muted);font-size:14px}
+    main{max-width:var(--maxw);margin:18px auto;padding:0 18px 60px}
+    .meta{font-size:13px;color:var(--muted);margin-top:6px}
+    /* filters */
+    .filters{display:flex;gap:8px;margin:12px 0 18px;flex-wrap:wrap}
+    .filters button{background:#fff;border:1px solid #e9e9e9;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13px}
+    .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    /* grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .card{background:var(--card);border:1px solid #eee;padding:10px;border-radius:8px;display:flex;flex-direction:column;gap:10px;transition:transform 160ms ease,box-shadow 160ms ease;will-change:transform}
+    .card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(15,20,30,0.06)}
+    .title{font-size:14px;font-weight:600;margin:0 0 6px}
+    .cap{font-size:13px;color:var(--muted);margin:0}
+    .thumb{width:100%;height:160px;border-radius:6px;object-fit:cover;display:block;border:1px solid #f0f0f0}
+    .tools{margin-top:8px;font-size:13px;color:var(--muted)}
+    footer{padding:28px 18px;text-align:center;color:var(--muted);font-size:13px}
+    /* case study */
+    .case{background:#fff;padding:14px;border-radius:8px;border:1px solid #eee;margin-top:22px}
+    .case h3{margin:0 0 8px;font-size:15px}
+    /* lightbox */
+    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;padding:18px;z-index:9999}
+    #lightbox img{max-width:calc(100% - 40px);max-height:90vh;border-radius:8px;border:6px solid rgba(255,255,255,0.06);box-shadow:0 12px 30px rgba(0,0,0,0.4)}
+    #lightbox .meta{color:#fff;margin-top:8px}
+    .hide{display:none !important}
+    @media (max-width:460px){
+      .thumb{height:140px}
+      h1{font-size:16px}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap top" aria-label="Top bar">
+    <div>
+      <h1>Apoorva Jnana</h1>
+      <div class="hero">Scientific graphic designer - publication-ready figures, visual abstracts, and presentation graphics</div>
+      <div class="meta">Tools: Illustrator, BioRender, Python - matplotlib, Inkscape</div>
+    </div>
+
+    <div class="ctas" role="navigation" aria-label="Contact">
+      <!-- Update mailto email and LinkedIn URL -->
+      <a class="btn" href="mailto:apoorva@example.com">Email</a>
+      <a class="btn" href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn primary" id="download-pdf" href="portfolio.pdf" target="_blank" rel="noopener">Download PDF</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <!-- Filters -->
+    <div class="filters" role="tablist" aria-label="Filter projects">
+      <button data-filter="all" class="active">All</button>
+      <button data-filter="figure">Figures</button>
+      <button data-filter="abstract">Visual abstracts</button>
+      <button data-filter="poster">Posters</button>
+    </div>
+
+    <!-- Grid -->
+    <section class="grid" id="grid">
+      <!-- Example card 1 -->
+      <article class="card" data-type="figure">
+        <p class="title">Pyocyanin figure</p>
+        <img class="thumb" src="images/figure1.jpg" alt="Pyocyanin figure showing concentration comparison" loading="lazy" onerror="this.style.display='none'">
+        <p class="cap">Designed figure and layout. Tools: Illustrator, BioRender. <a href="https://example.com" target="_blank" rel="noopener">Published</a></p>
+        <p class="tools">Role: data visualization, layout, final art</p>
+      </article>
+
+      <!-- Example card 2 -->
+      <article class="card" data-type="abstract">
+        <p class="title">Visual abstract - biofilm dynamics</p>
+        <img class="thumb" src="images/visualabstract1.png" alt="Visual abstract representing biofilm formation stages" loading="lazy" onerror="this.style.display='none'">
+        <p class="cap">Created a concise visual abstract from manuscript figures. Tools: Illustrator. <a href="https://example.com" target="_blank" rel="noopener">Published</a></p>
+        <p class="tools">Role: conceptual layout, final illustration</p>
+      </article>
+
+      <!-- Example card 3 -->
+      <article class="card" data-type="poster">
+        <p class="title">Conference poster - microscopy</p>
+        <img class="thumb" src="images/poster1.jpg" alt="Conference poster combining microscopy panels" loading="lazy" onerror="this.style.display='none'">
+        <p class="cap">Design and assembly for conference presentation. Tools: Inkscape, Illustrator.</p>
+        <p class="tools">Role: poster layout and print prep</p>
+      </article>
+
+      <!-- Add your cards below following the same pattern.
+           Change src to your filenames in images/ and adjust data-type to figure|abstract|poster.
+           Keep titles concise and captions short.
+      -->
+
+    </section>
+
+    <!-- Case study example -->
+    <section class="case" aria-labelledby="case-hdr">
+      <h3 id="case-hdr">Case study - visual abstract for Journal X</h3>
+      <p style="margin:8px 0;color:var(--muted)">Problem: Complex results in manuscript were hard to communicate to non-specialist readers. Process: distilled key findings into a single-panel visual story, iterated with the author for scientific accuracy, and produced final art in Illustrator. Outcome: visual abstract included in the journal online supplement and used in a tweet by the corresponding author.</p>
+    </section>
+
+  </div>
+</main>
+
+<!-- Lightbox -->
+<div id="lightbox" role="dialog" aria-hidden="true" aria-label="Image preview">
+  <div style="text-align:center">
+    <img id="lb-img" src="" alt="">
+    <div class="meta" id="lb-caption"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    © <span id="year"></span> Apoorva Jnana • <a href="mailto:apoorva@example.com">apoorva@example.com</a>
+  </div>
+</footer>
+
+<script>
+  // set year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Filters
+  document.querySelectorAll('.filters button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.getAttribute('data-filter');
+      document.querySelectorAll('.card').forEach(c=>{
+        if(f === 'all' || c.dataset.type === f) c.style.display = 'flex'; else c.style.display = 'none';
+      });
+    });
+  });
+
+  // Lightbox - basic
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbCap = document.getElementById('lb-caption');
+
+  document.querySelectorAll('.card img').forEach(img=>{
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', e=>{
+      const src = e.currentTarget.src;
+      lbImg.src = src;
+      // find the nearest title and caption
+      const card = e.currentTarget.closest('.card');
+      const title = card.querySelector('.title') ? card.querySelector('.title').textContent : '';
+      const capEl = card.querySelector('.cap');
+      const cap = capEl ? capEl.textContent : '';
+      lbCap.textContent = title + (cap ? ' - ' + cap : '');
+      lb.style.display = 'flex';
+      lb.setAttribute('aria-hidden', 'false');
+    });
+  });
+
+  lb.addEventListener('click', ()=>{
+    lb.style.display = 'none';
+    lb.setAttribute('aria-hidden', 'true');
+    lbImg.src = '';
+  });
+
+  // keyboard close
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') { lb.style.display = 'none'; lb.setAttribute('aria-hidden', 'true'); lbImg.src = ''; }
+  });
+
+  // Graceful fallback if portfolio.pdf not present
+  (function(){
+    const dl = document.getElementById('download-pdf');
+    // try to fetch the file head to check existence
+    fetch('portfolio.pdf', {method:'HEAD'}).then(r=>{
+      if(!r.ok) dl.style.display = 'none';
+    }).catch(()=>{ dl.style.display = 'none'; });
+  })();
+</script>
+
+</body>
+</html>
