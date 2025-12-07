@@ -35,7 +35,6 @@
     letter-spacing:0.2px;
     margin-left:2px; /* small intentional separation */
     }
-    
     .ctas{display:flex;gap:10px}
     .btn{font-size:13px;padding:8px 12px;border-radius:8px;border:1px solid #e6e6e6;background:#fff;text-decoration:none;color:inherit}
     .btn.primary{background:var(--accent);color:#fff;border-color:rgba(11,102,255,0.9)}
@@ -111,7 +110,7 @@
       <h1>
       <span class="jnana">Jnana</span><span class="designs">Designs</span>
       </h1>
-      <div class="hero">Scientific graphic design portfolio of Apoorva Jnana. </div>
+      <div class="hero">Scientific graphic design portfolio by Apoorva Jnana. Publication-ready figures, visual abstracts, posters, presentations, and design insights.</div>
       <div class="meta">Tools: Illustrator, Affinity Designer, Microsoft powerpoint (yes, really), iArtbook (iOS), Noteful (iOS)</div>
     </div>
 
@@ -133,9 +132,9 @@
       <button data-filter="abstract">Visual abstracts</button>
       <button data-filter="poster">Posters</button>
       <button data-filter="presentation">Presentations</button>
-      <button data-filter="btw">BTW</button>
+      <button data-filter="btw">Logbook</button>
     </div>
-    
+
     <section class="grid" id="grid">
 
       <!-- FIGURE example -->
@@ -172,7 +171,7 @@
 
       <!-- BTW example -->
       <article class="card" data-type="btw">
-        <p class="title">BTW: Insights, tips, commentary on the state of art and science</p>
+        <p class="title">Logbook: Insights, tips, commentary on the state of art and science</p>
         <img class="thumb" src="images/btw1.jpg" loading="lazy">
         <p class="cap">Short insights on simplifying complex figures. <a href="#" target="_blank">Read</a></p>
         <p class="tools">Behind The Work</p>
@@ -201,6 +200,12 @@
       document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       const f = btn.getAttribute('data-filter');
+      document.querySelectorAll('.card').forEach(c=>{
+        c.style.display = (f === 'all' || c.dataset.type === f) ? 'flex' : 'none';
+      });
+    });
+  });
+
   // Lightbox
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lb-img');
