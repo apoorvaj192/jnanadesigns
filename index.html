@@ -4,46 +4,59 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>JnanaDesigns</title>
-  <meta name="description" content="Scientific graphic design portfolio by Apoorva Jnana. Publication-ready figures, visual abstracts, posters, presentations, and design insights.">
+  <meta name="description" content="Scientific graphic design portfolio by Apoorva Jnana. Publication-ready figures, visual abstracts, posters, presentations, and behind-the-work insights.">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,500&display=swap">
   <style>
     :root{
       --maxw:980px;
-      --bg:#fbfbfb;
-      --card:#fff;
-      --muted:#666;
-      --accent:#0b66ff;
+      --bg:#fbfaf8;         /* slightly warm off-white */
+      --card:#ffffff;
+      --muted:#5f6b6b;
+      --accent:#d96f3f;     /* warm, inviting burnt orange accent */
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-    body{margin:0;background:var(--bg);color:#111;line-height:1.45;}
-    header{position:sticky;top:0;backdrop-filter:blur(4px);background:rgba(255,255,255,0.98);border-bottom:1px solid #e9e9e9;z-index:50}
+
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:#111;line-height:1.45;-webkit-font-smoothing:antialiased}
+    header{position:sticky;top:0;backdrop-filter: blur(6px);background:rgba(255,255,255,0.96);border-bottom:1px solid rgba(0,0,0,0.04);z-index:50}
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px}
     .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
     h1{
-    margin:0;
-    font-size:26px;
-    font-weight:600;
-    letter-spacing:0.2px;
+      margin:0;
+      font-size:26px;
+      font-weight:600;
+      letter-spacing:0.2px;
+      display:flex;
+      align-items:baseline;
+      gap:6px;
     }
     .jnana{
-    font-family:"Poppins", sans-serif;
-    font-weight:600;
+      font-family:"Poppins",sans-serif;
+      font-weight:600;
+      color:#1f2a2a;
+      letter-spacing:0.4px;
     }
     .designs{
-    font-family:"Playfair Display", serif;
-    font-weight:500;
-    font-style:italic;
-    letter-spacing:0.2px;
-    margin-left:2px; /* small intentional separation */
+      font-family:"Playfair Display",serif;
+      font-weight:500;
+      font-style:italic;
+      letter-spacing:0.2px;
+      margin-left:2px;
+      color:#2f2b2b;
+      font-size:20px;
     }
-    .ctas{display:flex;gap:10px}
-    .btn{font-size:13px;padding:8px 12px;border-radius:8px;border:1px solid #e6e6e6;background:#fff;text-decoration:none;color:inherit}
-    .btn.primary{background:var(--accent);color:#fff;border-color:rgba(11,102,255,0.9)}
-    .hero{padding:14px 0 8px;color:var(--muted);font-size:14px}
+
+    .ctas{display:flex;gap:10px;align-items:center}
+    .btn{font-size:13px;padding:8px 12px;border-radius:8px;border:1px solid #e9e9e9;background:#fff;text-decoration:none;color:inherit;display:inline-flex;align-items:center;gap:8px}
+    .btn.primary{background:var(--accent);color:#fff;border-color:rgba(0,0,0,0.06)}
+    .hero{padding:14px 0 8px;color:var(--muted);font-size:14px;max-width:700px}
     .meta{font-size:13px;color:var(--muted);margin-top:6px}
 
     main{max-width:var(--maxw);margin:18px auto;padding:0 18px 60px}
 
-    /* filters */
+    /* search + filters area */
+    #search{width:100%; padding:10px; border:1px solid #e6e6e6; border-radius:8px; margin-bottom:12px; font-size:14px; background:#fff}
     .filters{display:flex;gap:8px;margin:12px 0 18px;flex-wrap:wrap}
     .filters button{
       background:#fff;
@@ -52,98 +65,81 @@
       border-radius:8px;
       cursor:pointer;
       font-size:13px;
+      color:#263238;
     }
-    .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-/* pastel category colours */
-.filters button[data-filter="figure"]{
-  background:#f9f3f3;
-  border-color:#f0dede;
-}
-.filters button[data-filter="abstract"]{
-  background:#f3fbf7;
-  border-color:#d8efe0;
-}
-.filters button[data-filter="poster"]{
-  background:#fcf7f3;
-  border-color:#f2e7d6;
-}
-.filters button[data-filter="presentation"]{
-  background:#f5f7ff;
-  border-color:#dbe1ff;
-}
-.filters button[data-filter="btw"]{
-  background:#f9f5ff;
-  border-color:#eadffb;
-}
 
-/* active state always overrides pastel */
-.filters button.active{
-  background:var(--accent);
-  color:#fff;
-  border-color:var(--accent);
-}
+    /* professional, warmer category colours (richer but soft) */
+    .filters button[data-filter="figure"]{
+      background:#eaf3ff; border-color:#cfe3ff; color:#103a6f;
+    }
+    .filters button[data-filter="abstract"]{
+      background:#e8fbf4; border-color:#cceee2; color:#0f5d4d;
+    }
+    .filters button[data-filter="poster"]{
+      background:#fff5ea; border-color:#ffe4c9; color:#7a4a1d;
+    }
+    .filters button[data-filter="presentation"]{
+      background:#eef2ff; border-color:#d8e0ff; color:#2b3a8a;
+    }
+    .filters button[data-filter="btw"]{
+      background:#fbf0ff; border-color:#eed6ff; color:#5b2e6e;
+    }
+
+    /* active state overrides */
+    .filters button.active{
+      background:var(--accent);
+      color:#fff;
+      border-color:var(--accent);
+    }
 
     /* grid */
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
     .card{
-  background:var(--card);
-  border:1px solid #eee;
-  padding:12px;
-  border-radius:10px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  transition:transform 160ms ease,box-shadow 160ms ease;
-  overflow:hidden;
-}
+      background:var(--card);
+      border:1px solid rgba(15,20,30,0.04);
+      padding:14px;
+      border-radius:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      transition:transform 180ms cubic-bezier(.2,.8,.2,1),box-shadow 180ms;
+      overflow:hidden;
+      min-height:220px;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 16px 40px rgba(15,20,30,0.08);
+    }
 
-.card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 8px 24px rgba(0,0,0,0.06);
-}
+    .title{
+      font-family:"Poppins",sans-serif;
+      font-size:15px;
+      font-weight:600;
+      margin:0;
+    }
 
-.title{
-  font-family:"Poppins",sans-serif;
-  font-size:15px;
-  font-weight:600;
-}
+    .thumb{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+      border-radius:8px;
+      border:1px solid rgba(0,0,0,0.04);
+      background:linear-gradient(180deg, #f8f8f8, #fff);
+    }
 
-.thumb{
-  width:100%;
-  height:170px;
-  object-fit:cover;
-  border-radius:6px;
-  border:1px solid #eaeaea;
-}
-
-.labels{
-  font-size:12px;
-  color:#777;
-  margin-top:4px;
-  text-transform:capitalize;
-}
-
+    .cap{font-size:13px;color:var(--muted);margin:0}
     .tools{margin-top:8px;font-size:13px;color:var(--muted)}
-
-    /* case */
-    .case{background:#fff;padding:14px;border-radius:8px;border:1px solid #eee;margin-top:22px}
-    .case h3{margin:0 0 8px;font-size:15px}
+    .labels{font-size:12px;color:#6b6b6b;margin-top:6px}
 
     footer{padding:28px 18px;text-align:center;color:var(--muted);font-size:13px}
 
     /* lightbox */
-    #lightbox{
-      display:none;
-      position:fixed;inset:0;
-      background:rgba(0,0,0,0.75);
-      align-items:center;justify-content:center;
-      padding:18px;z-index:9999
-    }
-    #lightbox img{
-      max-width:calc(100% - 40px);
-      max-height:90vh;
-      border-radius:8px;border:6px solid rgba(255,255,255,0.06);
-      box-shadow:0 12px 30px rgba(0,0,0,0.4)
+    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);align-items:center;justify-content:center;padding:18px;z-index:9999}
+    #lightbox img{max-width:calc(100% - 40px);max-height:90vh;border-radius:8px;border:6px solid rgba(255,255,255,0.06);box-shadow:0 12px 30px rgba(0,0,0,0.5)}
+
+    @media (max-width:600px){
+      h1{font-size:20px}
+      .thumb{height:150px}
     }
   </style>
 </head>
@@ -153,30 +149,27 @@
   <div class="wrap top">
     <div>
       <h1>
-      <span class="jnana">Jnana</span><span class="designs">Designs</span>
+        <span class="jnana">Jnana</span>
+        <span class="designs">Designs</span>
       </h1>
-      <div class="hero">Scientific graphic design portfolio of Apoorva Jnana; featuring figures, visual abstracts, posters, presentations, and behind-the-work insights.</div>
-      <div class="meta">Tools: Illustrator, Affinity Designer, Microsoft powerpoint (yes, really), iArtbook (iOS), Noteful (iOS)</div>
+      <div class="hero">Scientific graphic design portfolio of Apoorva Jnana; figures, visual abstracts, posters, presentations, and behind-the-work notes.</div>
+      <div class="meta">Tools: Illustrator, Affinity Designer, PowerPoint, Inkscape, matplotlib</div>
     </div>
 
     <div class="ctas">
       <a class="btn" href="mailto:apoorva@example.com">Email</a>
-      <a class="btn" href="https://www.linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
-      <a class="btn primary" id="download-pdf" href="portfolio.pdf" target="_blank">PDF</a>
+      <a class="btn" href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn primary" id="download-pdf" href="portfolio.pdf" target="_blank" rel="noopener">Download PDF</a>
     </div>
   </div>
 </header>
 
 <main>
   <div class="wrap">
-  <input
-  id="search"
-  type="text"
-  placeholder="Search projects…"
-  style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; margin-bottom:12px; font-size:14px;">
+    <input id="search" type="text" placeholder="Search projects…" />
 
     <!-- FILTER BUTTONS -->
-    <div class="filters">
+    <div class="filters" role="tablist" aria-label="Filter projects">
       <button data-filter="all" class="active">All</button>
       <button data-filter="figure">Figures</button>
       <button data-filter="abstract">Visual abstracts</button>
@@ -185,56 +178,52 @@
       <button data-filter="btw">BTW</button>
     </div>
 
-    <section class="grid" id="grid">
+    <div id="tagline" style="font-family:'Playfair Display', serif; font-size:15px; color:#444; margin:10px 0 8px; min-height:20px;"></div>
 
-      <!-- FIGURE example -->
+    <section class="grid" id="grid">
+      <!-- Static examples (kept as fallback) -->
       <article class="card" data-type="figure">
         <p class="title">Pyocyanin figure</p>
-        <img class="thumb" src="images/figure1.jpg" loading="lazy">
-        <p class="cap">Designed layout + final art. <a href="#" target="_blank">Published</a></p>
+        <img class="thumb" src="images/figure1.jpg" loading="lazy" alt="">
+        <p class="cap">Designed layout + final art. <a href="#" target="_blank" rel="noopener">Published</a></p>
         <p class="tools">Illustrator, BioRender</p>
       </article>
 
-      <!-- ABSTRACT example -->
       <article class="card" data-type="abstract">
         <p class="title">Visual abstracts: the soul of witty science</p>
-        <img class="thumb" src="images/visualabstract1.png" loading="lazy">
-        <p class="cap">Single-panel visual story for manuscript. <a href="#" target="_blank">Published</a></p>
+        <img class="thumb" src="images/visualabstract1.png" loading="lazy" alt="">
+        <p class="cap">Single-panel visual story for manuscript. <a href="#" target="_blank" rel="noopener">Published</a></p>
         <p class="tools">Illustrator</p>
       </article>
 
-      <!-- POSTER example -->
       <article class="card" data-type="poster">
         <p class="title">Posters: Ticket to knowledge and conference swag</p>
-        <img class="thumb" src="images/poster1.jpg" loading="lazy">
+        <img class="thumb" src="images/poster1.jpg" loading="lazy" alt="">
         <p class="cap">Poster layout with microscopy panels.</p>
         <p class="tools">Inkscape, Illustrator</p>
       </article>
 
-      <!-- PRESENTATION example -->
       <article class="card" data-type="presentation">
-        <p class="title">Presentation: Microsot FTW</p>
-        <img class="thumb" src="images/presentation1.jpg" loading="lazy">
-        <p class="cap">Slide design for research talk. <a href="#" target="_blank">View</a></p>
+        <p class="title">Presentation: Microsoft FTW</p>
+        <img class="thumb" src="images/presentation1.jpg" loading="lazy" alt="">
+        <p class="cap">Slide design for research talk. <a href="#" target="_blank" rel="noopener">View</a></p>
         <p class="tools">Presentation design</p>
       </article>
 
-      <!-- BTW example -->
       <article class="card" data-type="btw">
-        <p class="title">BTW: Insights, tips, commentary on the state of art and science</p>
-        <img class="thumb" src="images/btw1.jpg" loading="lazy">
-        <p class="cap">Short insights on simplifying complex figures. <a href="#" target="_blank">Read</a></p>
+        <p class="title">BTW: Insights, tips, commentary</p>
+        <img class="thumb" src="images/btw1.jpg" loading="lazy" alt="">
+        <p class="cap">Short insights on simplifying complex figures. <a href="#" target="_blank" rel="noopener">Read</a></p>
         <p class="tools">Behind The Work</p>
       </article>
-
     </section>
 
   </div>
 </main>
 
 <!-- Lightbox -->
-<div id="lightbox">
-  <img id="lb-img" src="">
+<div id="lightbox" role="dialog" aria-hidden="true">
+  <img id="lb-img" src="" alt="">
 </div>
 
 <footer>
@@ -242,134 +231,150 @@
 </footer>
 
 <script>
+  // Set year
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Filters
+  // Simple filters (works on static fallback cards too)
+  function updateVisibility(){
+    const active = document.querySelector('.filters button.active');
+    const f = active ? active.getAttribute('data-filter') : 'all';
+    const q = (document.getElementById('search').value || '').toLowerCase().trim();
+    document.getElementById('tagline').textContent = {
+      all: "All projects — a full overview of my scientific design work.",
+      figure: "Figures — publication-ready scientific visuals with clarity and precision.",
+      abstract: "Visual Abstracts — single-panel narratives simplifying complex studies.",
+      poster: "Posters — scientific posters designed for readability and impact.",
+      presentation: "Presentations — slide compositions crafted for storytelling and flow.",
+      btw: "BTW — Behind The Work. Notes on process, creativity, and design decisions."
+    }[f] || '';
+
+    document.querySelectorAll('.card').forEach(card=>{
+      const matchesFilter = (f === 'all' || card.dataset.type === f);
+      const text = card.innerText.toLowerCase();
+      const matchesSearch = q === '' ? true : text.includes(q);
+      card.style.display = (matchesFilter && matchesSearch) ? 'flex' : 'none';
+    });
+  }
+
   document.querySelectorAll('.filters button').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      const f = btn.getAttribute('data-filter');
-      document.querySelectorAll('.card').forEach(c=>{
-        c.style.display = (f === 'all' || c.dataset.type === f) ? 'flex' : 'none';
+      updateVisibility();
+    });
+  });
+
+  // Search
+  document.getElementById('search').addEventListener('input', updateVisibility);
+
+  // Lightbox handler
+  function attachLightbox(){
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    document.querySelectorAll('.card img').forEach(img=>{
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', e=>{
+        e.stopPropagation();
+        lbImg.src = e.currentTarget.src;
+        lb.style.display = 'flex';
+        lb.setAttribute('aria-hidden','false');
       });
     });
-  });
-// SEARCH FILTER
-const searchInput = document.getElementById('search');
-searchInput.addEventListener('input', ()=>{
-  const q = searchInput.value.toLowerCase();
-  document.querySelectorAll('.card').forEach(card=>{
-    const text = card.innerText.toLowerCase();
-    card.style.display = text.includes(q) ? 'flex' : 'none';
-  });
-});
-
-  // Lightbox
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lb-img');
-  document.querySelectorAll('.card img').forEach(img=>{
-    img.style.cursor='zoom-in';
-    img.addEventListener('click', e=>{
-      lbImg.src = e.target.src;
-      lb.style.display='flex';
-    });
-  });
-  lb.addEventListener('click', ()=> lb.style.display='none');
+    lb.addEventListener('click', ()=>{ lb.style.display='none'; lb.setAttribute('aria-hidden','true'); lbImg.src='';});
+    document.addEventListener('keydown', (ev)=>{ if(ev.key === 'Escape') { lb.style.display='none'; lb.setAttribute('aria-hidden','true'); }});
+  }
+  attachLightbox();
 </script>
+
+<!-- Issues CMS loader (dynamic cards from GitHub Issues) -->
 <script>
-/* GitHub Issues CMS loader
-   - Expects issues in the repo with:
-     - Title = project title
-     - Body = caption/description (first paragraph used)
-     - Image = first image embedded in the issue body (drag-drop image into issue)
-     - Labels = used to determine data-type (use label names: figure, abstract, poster, presentation, btw)
-   - Add this right before </body>. */
-
 (async function(){
-  const owner = 'apoorvaj192';    // your GitHub username
-  const repo  = 'jnanadesigns';   // your repo name
-  const issuesUrl = `https://api.github.com/repos/${owner}/${repo}/issues?state=open&per_page=100`;
+  const owner = 'apoorvaj192';
+  const repo = 'jnanadesigns';
+  const issuesUrl = `https://api.github.com/repos/${owner}/${repo}/issues?state=open&per_page=200`;
 
-  // Helper: extract first image URL from markdown body (pattern: ![alt](url))
-  function extractImageFromMarkdown(md){
-    if(!md) return null;
-    const imgRegex = /!\[.*?\]\((https?:\/\/[^\s)]+)\)/i;
-    const m = md.match(imgRegex);
-    return m ? m[1] : null;
+  // Helpers
+  function extractImages(md){
+    if(!md) return [];
+    const regex = /!\[.*?\]\((https?:\/\/[^\s)]+)\)/gi;
+    const arr = [];
+    let m;
+    while((m = regex.exec(md)) !== null) arr.push(m[1]);
+    return arr;
   }
-
-  // Helper: get first paragraph from markdown body
-  function extractFirstParagraph(md){
+  function firstParagraph(md){
     if(!md) return '';
-    // remove image markdown entirely to avoid duplication
     let text = md.replace(/!\[.*?\]\((https?:\/\/[^\s)]+)\)/gi, '');
-    // Replace github-style references with nothing
     text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
-    // split by double newline or single newline
-    const parts = text.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
-    if(parts.length === 0) return text.trim().split('\n').slice(0,3).join(' ').trim();
-    return parts[0];
+    const parts = text.split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean);
+    return parts.length ? parts[0] : text.trim().split('\n').slice(0,3).join(' ').trim();
   }
 
-  // Optional: show a loading line
   const grid = document.getElementById('grid');
-  const taglineEl = document.getElementById('tagline') || document.createElement('div');
-  if(!taglineEl.id) { taglineEl.id = 'tagline'; grid.parentNode.insertBefore(taglineEl, grid); }
+  const taglineEl = document.getElementById('tagline');
   taglineEl.textContent = '';
 
   try {
     const res = await fetch(issuesUrl);
-    if(!res.ok) throw new Error('Failed to fetch issues: ' + res.status);
-    const issues = await res.json();
+    if(!res.ok) throw new Error('fetch failed: ' + res.status);
+    let issues = await res.json();
+    issues = issues.filter(i => !i.pull_request);
 
-    // Optionally sort by creation date so newest appear first
-    issues.sort((a,b)=> new Date(b.created_at) - new Date(a.created_at));
+    // featured first
+    const featured = [], normal = [];
+    for(const it of issues){
+      const labelsLower = (it.labels || []).map(l => l.name.toLowerCase());
+      if(labelsLower.includes('featured')) featured.push(it); else normal.push(it);
+    }
+    featured.sort((a,b)=> new Date(b.created_at) - new Date(a.created_at));
+    normal.sort((a,b)=> new Date(b.created_at) - new Date(a.created_at));
+    const ordered = featured.concat(normal);
 
-    // Clear existing static cards (optional)
+    // wipe static fallback cards
     grid.innerHTML = '';
 
-    if(issues.length === 0){
-      grid.innerHTML = '<p style="color:#666">No projects found. Create an Issue to add items to the portfolio.</p>';
-      taglineEl.textContent = '';
+    if(ordered.length === 0){
+      grid.innerHTML = '<p style="color:#666">No projects found. Create an Issue to add items.</p>';
       return;
     }
 
-    // Map each issue -> card
-    for(const issue of issues){
-      // Skip pull requests (GitHub treats PRs as issues as well)
-      if(issue.pull_request) continue;
-
-      // Determine type from labels (use the first matching label that equals a known type)
+    for(const issue of ordered){
       const labelNames = (issue.labels || []).map(l => l.name.toLowerCase());
       const knownTypes = ['figure','abstract','poster','presentation','btw'];
       const type = labelNames.find(l => knownTypes.includes(l)) || 'figure';
 
       const title = issue.title || 'Untitled';
-      const bodyMd = issue.body || '';
-      const caption = extractFirstParagraph(bodyMd) || '';
-      const image = extractImageFromMarkdown(bodyMd); // might be null
-      const url = issue.html_url; // link to the issue for "Read more"
+      const body = issue.body || '';
+      const caption = firstParagraph(body) || '';
+      const imgs = extractImages(body);
+      const image = imgs.length ? imgs[0] : null;
+      const issueNumber = issue.number;
 
-      // Build card element
+      // Build card
       const art = document.createElement('article');
       art.className = 'card';
       art.dataset.type = type;
 
-      // Title (clickable)
-const titleEl = document.createElement('p');
-titleEl.className = 'title';
-const titleLink = document.createElement('a');
-titleLink.href = `./project.html?issue=${issue.number}`;
-titleLink.textContent = title;
-titleLink.style.color = 'inherit';
-titleLink.style.textDecoration = 'none';
-titleLink.style.display = 'inline-block';
-titleEl.appendChild(titleLink);
-art.appendChild(titleEl);
+      // Make whole card clickable but allow links inside
+      art.style.cursor = 'pointer';
+      art.addEventListener('click', (e) => {
+        if(e.target.closest && e.target.closest('a')) return;
+        window.location.href = `./project.html?issue=${issueNumber}`;
+      });
 
+      // Title (link)
+      const titleEl = document.createElement('p');
+      titleEl.className = 'title';
+      const titleLink = document.createElement('a');
+      titleLink.href = `./project.html?issue=${issueNumber}`;
+      titleLink.textContent = title;
+      titleLink.style.color = 'inherit';
+      titleLink.style.textDecoration = 'none';
+      titleLink.style.display = 'inline-block';
+      titleEl.appendChild(titleLink);
+      art.appendChild(titleEl);
 
-      // Image (if found)
+      // Image
       if(image){
         const img = document.createElement('img');
         img.className = 'thumb';
@@ -379,55 +384,82 @@ art.appendChild(titleEl);
         art.appendChild(img);
       }
 
-      // Caption block
+      // caption + read
       const cap = document.createElement('p');
       cap.className = 'cap';
       if(caption){
-        // If issue has a link inside body and you want to link "Read", keep plain caption and add link
-        const readLink = document.createElement('a');
-        readLink.href = `./project.html?issue=${issue.number}`;
-        readLink.target = '_blank';
-        readLink.rel = 'noopener';
-        readLink.textContent = ' Read';
-        // set text to caption and append read link
         cap.textContent = caption;
+        const readLink = document.createElement('a');
+        readLink.href = `./project.html?issue=${issueNumber}`;
+        readLink.textContent = ' Read';
+        readLink.target = '_self';
         cap.appendChild(document.createTextNode(' '));
         cap.appendChild(readLink);
       } else {
-        cap.innerHTML = `<a href="${url}" target="_blank" rel="noopener">Open</a>`;
+        cap.innerHTML = `<a href="./project.html?issue=${issueNumber}" target="_self">Open</a>`;
       }
       art.appendChild(cap);
 
-      // Tools / footer small text - optional: first label or created date
+      // tools / labels
       const tools = document.createElement('p');
       tools.className = 'tools';
-      tools.textContent = (labelNames.length>0 ? labelNames.join(', ') : '') + ' ';
+      const primary = labelNames.filter(l=>knownTypes.includes(l)).join(', ');
+      const others = labelNames.filter(l=>!knownTypes.includes(l) && l !== 'featured');
+      tools.textContent = (primary ? primary + (others.length ? ' • ' : '') : '') + (others.join(', ') || '');
       art.appendChild(tools);
+
+      // tags chips
+      if(others.length){
+        const tagsDiv = document.createElement('div');
+        tagsDiv.className = 'labels';
+        tagsDiv.innerHTML = others.map(t=>`<span style="display:inline-block;background:#f4f4f4;padding:4px 8px;border-radius:999px;margin-right:6px;font-size:12px;color:#333;text-transform:capitalize">${t}</span>`).join('');
+        art.appendChild(tagsDiv);
+      }
+
+      // featured badge
+      if(labelNames.includes('featured')){
+        const feat = document.createElement('div');
+        feat.style.fontSize = '12px';
+        feat.style.color = '#b36e00';
+        feat.style.marginTop = '6px';
+        feat.textContent = '★ Featured';
+        art.appendChild(feat);
+      }
 
       grid.appendChild(art);
     }
 
-    // Now re-run the existing filter setup (in case filters already exist)
-    (function attachFilters(){
-      const filterBtns = document.querySelectorAll('.filters button');
-      filterBtns.forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          filterBtns.forEach(b=>b.classList.remove('active'));
-          btn.classList.add('active');
-          const f = btn.getAttribute('data-filter');
-          // update tagline if needed (you may have tagline object elsewhere)
-          // Show/hide cards
-          document.querySelectorAll('.card').forEach(c=>{
-            c.style.display = (f === 'all' || c.dataset.type === f) ? 'flex' : 'none';
-          });
+    // reattach filter/search behaviour now that cards exist
+    document.querySelectorAll('.filters button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        updateVisibility();
+      });
+    });
+    document.getElementById('search').addEventListener('input', updateVisibility);
+
+    // run initial visibility and attach lightbox
+    updateVisibility();
+    (function attachLightbox(){
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lb-img');
+      document.querySelectorAll('.card img').forEach(img=>{
+        img.style.cursor='zoom-in';
+        img.addEventListener('click', e=>{
+          e.stopPropagation();
+          lbImg.src = e.currentTarget.src;
+          lb.style.display='flex';
+          lb.setAttribute('aria-hidden','false');
         });
       });
+      lb.addEventListener('click', ()=>{ lb.style.display='none'; lb.setAttribute('aria-hidden','true'); });
+      document.addEventListener('keydown', (ev)=>{ if(ev.key === 'Escape') { lb.style.display='none'; lb.setAttribute('aria-hidden','true'); }});
     })();
 
   } catch(err){
     console.error(err);
     grid.innerHTML = '<p style="color:#c33">Unable to load projects. See console for details.</p>';
-    taglineEl.textContent = '';
   }
 
 })();
