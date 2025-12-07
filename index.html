@@ -35,13 +35,7 @@
     letter-spacing:0.2px;
     margin-left:2px; /* small intentional separation */
     }
-    #tagline{
-    font-family: "Playfair Display", serif;
-    font-size: 15px;
-    color: #444;
-    letter-spacing: 0.3px;
-    }
-
+    
     .ctas{display:flex;gap:10px}
     .btn{font-size:13px;padding:8px 12px;border-radius:8px;border:1px solid #e6e6e6;background:#fff;text-decoration:none;color:inherit}
     .btn.primary{background:var(--accent);color:#fff;border-color:rgba(11,102,255,0.9)}
@@ -117,7 +111,7 @@
       <h1>
       <span class="jnana">Jnana</span><span class="designs">Designs</span>
       </h1>
-      <div class="hero">Scientific graphic design portfolio by Apoorva Jnana. Publication-ready figures, visual abstracts, posters, presentations, and design insights.</div>
+      <div class="hero">Scientific graphic design portfolio of Apoorva Jnana. </div>
       <div class="meta">Tools: Illustrator, Affinity Designer, Microsoft powerpoint (yes, really), iArtbook (iOS), Noteful (iOS)</div>
     </div>
 
@@ -141,8 +135,7 @@
       <button data-filter="presentation">Presentations</button>
       <button data-filter="btw">BTW</button>
     </div>
-    <div id="tagline" style="font-size:14px; color:#444; margin:14px 0 10px; min-height:20px;"></div>
-   
+    
     <section class="grid" id="grid">
 
       <!-- FIGURE example -->
@@ -208,27 +201,6 @@
       document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       const f = btn.getAttribute('data-filter');
-      // Taglines for each category
-      const taglines = {
-      all: "Uniterrupted stream of visual science",
-      figure: "Figures: Published scientific visuals",
-      abstract: "Visual Abstracts ... is the soul of witty science",
-      poster: "Posters: Impactful summaries to fill quick breaks",
-      presentation: "Presentations: Storytelling at its best, Microsoft FTW!",
-      btw: "BTW: Behind The Work. Notes on process, creativity, and design decisions."
-      };
-
-      // Update tagline
-      document.getElementById('tagline').textContent = taglines[f] || "";
-      // Show/hide cards
-      document.querySelectorAll('.card').forEach(c=>{
-      c.style.display = (f === 'all' || c.dataset.type === f) ? 'flex' : 'none';
-    });
-
-  });
-});
-
-
   // Lightbox
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lb-img');
