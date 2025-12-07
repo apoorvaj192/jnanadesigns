@@ -3,201 +3,218 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Project — JnanaDesigns</title>
-  <meta name="description" content="Project details">
+  <title>JnanaDesigns — Project</title>
+  <meta name="description" content="Project details — JnanaDesigns">
+  <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,500&display=swap">
+  <!-- marked + DOMPurify for robust Markdown rendering + sanitization -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+
   <style>
-    body{font-family:system-ui, -apple-system, "Segoe UI", Roboto, Arial; margin:0; padding:24px; color:#111; background:#fff}
-    .wrap{max-width:920px;margin:0 auto}
-    a{color:#0b6e6e}
-    .back{display:inline-block;margin-bottom:18px;padding:8px 12px;border-radius:8px;border:1px solid #eee;background:#fafafa;text-decoration:none;color:inherit}
-    h1{font-family:"Poppins",sans-serif;font-size:34px;margin:12px 0}
-    .meta{color:#666;margin-bottom:18px}
-    .content{background:#fff;padding:18px;border-radius:10px;border:1px solid #f0f0f0}
-    .content p{line-height:1.6;color:#333}
+    :root{
+      --maxw:980px;
+      --muted:#586066;
+      --accent:#0B6E6E;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{height:100%}
+    body{margin:0;background:#fff;color:#111;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:var(--maxw);margin:28px auto;padding:0 18px}
+    .back{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;padding:8px 12px;border-radius:8px;border:1px solid #eee;background:#fafafa;text-decoration:none;color:inherit;font-size:14px}
+    .brand-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:10px}
+    /* Brand heading */
+    #brand {
+      margin:0;
+      font-size:30px;
+      display:flex;
+      align-items:baseline;
+      gap:6px;
+    }
+    .jnana {
+      font-family:"Poppins",sans-serif;
+      font-weight:600;
+      color:#1f2a2a;
+      font-size:30px;
+      line-height:1;
+    }
+    .designs {
+      font-family:"Playfair Display",serif;
+      font-weight:500;
+      font-style:italic;
+      color:#2f2b2b;
+      font-size:30px;
+      line-height:1;
+    }
+
+    .meta{color:var(--muted);margin:10px 0 18px;font-size:14px}
+
+    .content{
+      background:#fff;
+      padding:18px;
+      border-radius:10px;
+      border:1px solid #f0f0f0;
+      color:#222;
+    }
+    .content p{line-height:1.6;margin:0 0 12px}
     .content img{max-width:100%;height:auto;border-radius:8px;display:block;margin:12px 0;cursor:zoom-in}
-    /* lightbox (simple) */
-    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;padding:18px;z-index:9999}
-    #lightbox img{max-width:calc(100% - 40px);max-height:90vh;border-radius:8px}
+    .content pre{background:#f7f7f7;padding:12px;border-radius:8px;overflow:auto}
+    .content a{color:var(--accent)}
+
+    /* lightbox */
+    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);align-items:center;justify-content:center;padding:18px;z-index:9999}
+    #lightbox img{max-width:calc(100% - 40px);max-height:90vh;border-radius:8px;box-shadow:0 20px 50px rgba(0,0,0,0.6)}
+    #lightbox .caption{color:#fff;margin-top:10px;font-family:'Playfair Display',serif;text-align:center}
+
+    @media (max-width:640px){
+      #brand{font-size:22px}
+      .jnana{font-size:22px}
+      .designs{font-size:22px}
+      .wrap{margin:16px auto;padding:0 12px}
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <a class="back" href="./">← Back</a>
-    <h1 id="title">Project</h1>
-    <div class="meta" id="meta"></div>
+    <a class="back" href="./" aria-label="Back to portfolio">← Back</a>
 
-    <div class="content" id="content">
-      Loading...
+    <div class="brand-row">
+      <h1 id="brand" aria-hidden="true">
+        <span class="jnana">Jnana</span><span class="designs">Designs</span>
+      </h1>
+      <!-- optional area: could add small actions e.g. download PDF for this project -->
+    </div>
+
+    <div id="meta" class="meta">Loading...</div>
+
+    <div id="content" class="content" aria-live="polite">Loading project…</div>
+  </div>
+
+  <!-- lightbox -->
+  <div id="lightbox" role="dialog" aria-hidden="true">
+    <div style="text-align:center">
+      <img id="lb-img" src="" alt="">
+      <div id="lb-caption" class="caption"></div>
     </div>
   </div>
 
-  <div id="lightbox" role="dialog" aria-hidden="true">
-    <img id="lb-img" src="" alt="">
-  </div>
-
 <script>
-/* Helper: read query param ?issue=NNN */
+/* Utility: read query param ?issue=NNN */
 function getQueryParam(name){
   const params = new URLSearchParams(location.search);
   return params.get(name);
 }
 
-/* Robust image extraction (same idea as index) - returns array of URLs */
-function extractImagesFromMarkdown(md){
-  if(!md) return [];
-  const imgs = [];
-
-  // Markdown ![alt](url)
-  const mdRegex = /!\[.*?\]\((https?:\/\/[^\s)]+)\)/gi;
-  let m;
-  while((m = mdRegex.exec(md)) !== null) imgs.push(m[1]);
-
-  // HTML <img src="..."> tags
-  const htmlImgRegex = /<img[^>]+src=(?:'|")([^'"]+)(?:'|")[^>]*>/gi;
-  while((m = htmlImgRegex.exec(md)) !== null){
-    if(!imgs.includes(m[1])) imgs.push(m[1]);
-  }
-
-  // Plain links to images (http(s)://...jpg|png|gif) - not in markdown
-  const plainRegex = /(https?:\/\/[^\s)]+?\.(?:png|jpe?g|gif|webp|svg))(?!\))/gi;
-  while((m = plainRegex.exec(md)) !== null){
-    if(!imgs.includes(m[1])) imgs.push(m[1]);
-  }
-
-  return imgs;
-}
-
-/* Simple markdown -> safe HTML converter (supports images and links and paragraphs) */
-function markdownToHtml(md){
+/* Transform GitHub issue body into safe HTML:
+   - Use marked.js to render markdown
+   - sanitize with DOMPurify
+   - ensure HTML <img> tags and plain image URLs are respected
+*/
+function renderBodyToHtml(md){
   if(!md) return '';
 
-  // 1) Escape HTML special chars first (so raw '<img>' shows as text) 
-  //     We'll restore allowed tags (img, a) after processing.
-  const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Some issue bodies might contain raw HTML <img> tags or github attachment tags.
+  // We'll first convert raw HTML image tags into markdown image tokens so marked renders them.
+  // Example: <img src="https://..."> -> ![](https://...)
+  let body = md;
 
-  // We will progressively replace markdown constructs into placeholders, then unescape allowed tags.
-
-  // Keep a working copy
-  let text = md;
-
-  // Replace Markdown image syntax with placeholder token: __IMG[n]__
-  const mdImgUrls = [];
-  text = text.replace(/!\[.*?\]\((https?:\/\/[^\s)]+)\)/gi, function(_, url){
-    mdImgUrls.push(url);
-    return `__IMG_MARKDOWN_${mdImgUrls.length-1}__`;
+  // Convert HTML <img ... src="..."> to markdown image token so marked will produce an <img>
+  body = body.replace(/<img[^>]+src=(?:'|")([^'"]+)(?:'|")[^>]*>/gi, function(_, src){
+    return `![](${src})`;
   });
 
-  // Replace HTML <img ...> tags with placeholder __IMGHTML[n]__ (capture src)
-  const htmlImgUrls = [];
-  text = text.replace(/<img[^>]+src=(?:'|")([^'"]+)(?:'|")[^>]*>/gi, function(_, src){
-    htmlImgUrls.push(src);
-    return `__IMG_HTML_${htmlImgUrls.length-1}__`;
+  // Convert plain image URLs (ending with image extension) on their own line into markdown images
+  body = body.replace(/(^|\n)(https?:\/\/\S+\.(?:png|jpe?g|gif|webp|svg))(\s|$)/gi, '\n![]($2)\n');
+
+  // Render markdown to HTML using marked
+  const rendered = marked.parse(body);
+
+  // Sanitize the HTML
+  const clean = DOMPurify.sanitize(rendered, {
+    ALLOWED_TAGS: ['a','p','img','strong','em','ul','ol','li','pre','code','blockquote','h1','h2','h3','br'],
+    ALLOWED_ATTR: ['href','src','alt','title','target','rel']
   });
 
-  // Replace plain image URLs with placeholders too
-  const plainImgUrls = [];
-  text = text.replace(/(https?:\/\/[^\s)]+?\.(?:png|jpe?g|gif|webp|svg))/gi, function(_, url){
-    // if it already matched earlier placeholders, skip adding duplicate
-    if(mdImgUrls.includes(url) || htmlImgUrls.includes(url) || plainImgUrls.includes(url)) return url;
-    plainImgUrls.push(url);
-    return `__IMG_PLAIN_${plainImgUrls.length-1}__`;
-  });
-
-  // Convert markdown links [text](url) to safe anchor placeholders
-  const linkMatches = [];
-  text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/gi, function(_, label, url){
-    linkMatches.push({label, url});
-    return `__LINK_${linkMatches.length-1}__`;
-  });
-
-  // Escape remaining user text
-  text = esc(text);
-
-  // Restore link placeholders
-  text = text.replace(/__LINK_(\d+)__/g, function(_, i){
-    const it = linkMatches[+i];
-    if(!it) return '';
-    return `<a href="${it.url}" target="_blank" rel="noopener">${esc(it.label)}</a>`;
-  });
-
-  // Replace double newlines (paragraphs)
-  const paragraphs = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
-
-  // For each paragraph convert single newlines to <br>
-  const htmlParts = paragraphs.map(p => p.replace(/\n/g, '<br>'));
-
-  let html = htmlParts.map(p => `<p>${p}</p>`).join('\n');
-
-  // Now restore image placeholders into real <img> tags (these are safe URLs we extracted)
-  mdImgUrls.forEach((url, idx) => {
-    html = html.replace(`__IMG_MARKDOWN_${idx}__`, `<img src="${url}" alt="" />`);
-  });
-  htmlImgUrls.forEach((url, idx) => {
-    html = html.replace(`__IMG_HTML_${idx}__`, `<img src="${url}" alt="" />`);
-  });
-  plainImgUrls.forEach((url, idx) => {
-    html = html.replace(`__IMG_PLAIN_${idx}__`, `<img src="${url}" alt="" />`);
-  });
-
-  // Finally, replace any leftover escaped angle brackets that were part of intentionally included tags
-  // (we intentionally allowed only <img> and <a> above; everything else remains escaped)
-
-  return html;
+  return clean;
 }
 
-/* Insert content into the page and attach lightbox handlers */
-function renderIssue(issue){
-  const titleEl = document.getElementById('title');
-  const metaEl = document.getElementById('meta');
-  const contentEl = document.getElementById('content');
+/* Lightbox handlers */
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lb-img');
+const lbCaption = document.getElementById('lb-caption');
 
-  titleEl.textContent = issue.title || 'Untitled';
-  const created = new Date(issue.created_at).toLocaleDateString();
-  const labels = (issue.labels||[]).map(l=>l.name).join(', ');
-  metaEl.textContent = `Published: ${created}${labels ? ' • Tags: ' + labels : ''}`;
+function openLightbox(src, caption){
+  lbImg.src = src;
+  lbImg.alt = caption || '';
+  lbCaption.textContent = caption || '';
+  lb.style.display = 'flex';
+  lb.setAttribute('aria-hidden','false');
+  // focus for keyboard interaction
+  lb.focus();
+}
 
-  // Convert body markdown-ish to HTML (images, links, paragraphs)
-  const html = markdownToHtml(issue.body || '');
+function closeLightbox(){
+  lb.style.display = 'none';
+  lb.setAttribute('aria-hidden','true');
+  lbImg.src = '';
+  lbCaption.textContent = '';
+}
 
-  contentEl.innerHTML = html || '<p>(No description)</p>';
+lb.addEventListener('click', (e)=>{
+  // clicking outside the image closes
+  if(e.target === lb || e.target === lbImg) closeLightbox();
+});
 
-  // Attach lightbox for any images inside content
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lb-img');
-  contentEl.querySelectorAll('img').forEach(img=>{
+document.addEventListener('keydown', (e)=>{
+  if(lb.style.display === 'flex' && e.key === 'Escape') closeLightbox();
+});
+
+/* Render issue onto the page */
+function showIssue(issue){
+  document.getElementById('meta').textContent = `Published: ${new Date(issue.created_at).toLocaleDateString()}${(issue.labels||[]).length ? ' • Tags: ' + issue.labels.map(l=>l.name).join(', ') : ''}`;
+
+  const html = renderBodyToHtml(issue.body || '');
+  document.getElementById('content').innerHTML = html || '<p>(No description)</p>';
+
+  // Attach click handlers to images inside content for lightbox
+  document.querySelectorAll('#content img').forEach(img => {
     img.style.cursor = 'zoom-in';
-    img.addEventListener('click', e=>{
-      lbImg.src = img.src;
-      lb.style.display = 'flex';
-      lb.setAttribute('aria-hidden','false');
+    img.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const captionText = (img.alt && img.alt !== '') ? img.alt : (img.title || '');
+      openLightbox(img.src, captionText);
     });
   });
-  lb.addEventListener('click', ()=>{ lb.style.display='none'; lb.setAttribute('aria-hidden','true'); lbImg.src='';});
 }
 
-/* Fetch issue from GitHub API and render */
+/* Fetch issue data and show */
 async function loadIssue(){
   const issueNum = getQueryParam('issue');
   if(!issueNum){
     document.getElementById('content').innerHTML = '<p>No issue specified.</p>';
+    document.getElementById('meta').textContent = '';
     return;
   }
-  const owner = 'apoorvaj192'; // keep your username
+  const owner = 'apoorvaj192';
   const repo = 'jnanadesigns';
   const url = `https://api.github.com/repos/${owner}/${repo}/issues/${issueNum}`;
 
   try {
     const res = await fetch(url);
     if(!res.ok) throw new Error('Failed to fetch issue: ' + res.status);
-    const data = await res.json();
-    renderIssue(data);
+    const issue = await res.json();
+    // Put a branded title at top (keeps consistent - we already show brand in header)
+    document.title = `JnanaDesigns — ${issue.title || 'Project'}`;
+    showIssue(issue);
   } catch(err){
     console.error(err);
-    document.getElementById('content').innerHTML = '<p style="color:#c33">Unable to load project. Check console.</p>';
+    document.getElementById('content').innerHTML = '<p style="color:#c33">Unable to load project. Check console for details.</p>';
+    document.getElementById('meta').textContent = '';
   }
 }
 
+/* Initialize */
 loadIssue();
 </script>
 </body>
