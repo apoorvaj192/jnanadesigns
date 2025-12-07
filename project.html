@@ -7,7 +7,7 @@
   <meta name="description" content="Project details — JnanaDesigns">
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,500&display=swap">
-  <!-- marked + DOMPurify for robust Markdown rendering + sanitization -->
+  <!-- marked + DOMPurify for Markdown rendering + sanitization -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
 
@@ -15,54 +15,92 @@
     :root{
       --maxw:980px;
       --muted:#586066;
-      --accent:#0B6E6E;
+      --accent:#0B6E6E;      /* teal accent consistent with main page */
+      --accent-strong:#0a5c5c;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
 
     html,body{height:100%}
     body{margin:0;background:#fff;color:#111;-webkit-font-smoothing:antialiased}
     .wrap{max-width:var(--maxw);margin:28px auto;padding:0 18px}
-    .back{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;padding:8px 12px;border-radius:8px;border:1px solid #eee;background:#fafafa;text-decoration:none;color:inherit;font-size:14px}
-    .brand-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:10px}
-    /* Brand heading */
+
+    /* Top row - back button on left */
+    .top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:6px}
+    .back{
+      display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;border:1px solid #eee;
+      background:#fafafa;text-decoration:none;color:inherit;font-size:14px;transition:all 120ms ease;
+    }
+    .back:hover{
+      background: rgba(11,110,110,0.06);
+      border-color: rgba(11,110,110,0.14);
+    }
+
+    /* Centered brand + title block */
+    .brand-block{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      margin-bottom:16px;
+      padding-top:8px;
+      border-bottom:2px solid rgba(11,110,110,0.12); /* subtle teal divider */
+      padding-bottom:14px;
+    }
+
+    /* Brand heading shown as one word (two fonts) */
     #brand {
       margin:0;
-      font-size:30px;
-      display:flex;
+      font-size:32px;
+      display:inline-flex;       /* inline-flex so it hugs content */
       align-items:baseline;
-      gap:6px;
+      justify-content:center;
+      letter-spacing:0;
+      line-height:1;
     }
     .jnana {
       font-family:"Poppins",sans-serif;
       font-weight:600;
       color:#1f2a2a;
-      font-size:30px;
-      line-height:1;
+      font-size:32px;
+      padding-right:0;
+      margin-right:0;
     }
     .designs {
       font-family:"Playfair Display",serif;
       font-weight:500;
       font-style:italic;
-      color:#2f2b2b;
-      font-size:30px;
-      line-height:1;
+      color:#1f2a2a;
+      font-size:32px;
+      padding-left:0;
+      margin-left:0;
     }
 
-    .meta{color:var(--muted);margin:10px 0 18px;font-size:14px}
+    /* Project title right under brand (teal) */
+    #post-title {
+      margin:12px 0 6px;
+      font-family:"Poppins",sans-serif;
+      font-size:20px;
+      font-weight:600;
+      color:var(--accent);
+    }
 
+    .meta{color:var(--accent);opacity:0.8;margin:6px 0 18px;font-size:14px}
+
+    /* Content box */
     .content{
       background:#fff;
       padding:18px;
       border-radius:10px;
-      border:1px solid #f0f0f0;
+      border:1px solid rgba(11,110,110,0.08);
       color:#222;
     }
     .content p{line-height:1.6;margin:0 0 12px}
     .content img{max-width:100%;height:auto;border-radius:8px;display:block;margin:12px 0;cursor:zoom-in}
     .content pre{background:#f7f7f7;padding:12px;border-radius:8px;overflow:auto}
-    .content a{color:var(--accent)}
+    .content a{color:var(--accent); text-decoration:underline;}
+    .content a:hover{color:var(--accent-strong)}
 
-    /* lightbox */
+    /* Lightbox */
     #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);align-items:center;justify-content:center;padding:18px;z-index:9999}
     #lightbox img{max-width:calc(100% - 40px);max-height:90vh;border-radius:8px;box-shadow:0 20px 50px rgba(0,0,0,0.6)}
     #lightbox .caption{color:#fff;margin-top:10px;font-family:'Playfair Display',serif;text-align:center}
@@ -72,21 +110,28 @@
       .jnana{font-size:22px}
       .designs{font-size:22px}
       .wrap{margin:16px auto;padding:0 12px}
+      #post-title{font-size:18px}
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <a class="back" href="./" aria-label="Back to portfolio">← Back</a>
+    <div class="top-row">
+      <a class="back" href="./" aria-label="Back to portfolio">← Back</a>
+      <div style="width:56px"></div> <!-- spacer to preserve alignment -->
+    </div>
 
-    <div class="brand-row">
+    <!-- Centered brand block: brand, then project title, then meta -->
+    <div class="brand-block" role="banner" aria-label="Brand and project title">
       <h1 id="brand" aria-hidden="true">
         <span class="jnana">Jnana</span><span class="designs">Designs</span>
       </h1>
-      <!-- optional area: could add small actions e.g. download PDF for this project -->
-    </div>
 
-    <div id="meta" class="meta">Loading...</div>
+      <!-- Project title populated by JS -->
+      <h2 id="post-title" aria-live="polite"></h2>
+
+      <div id="meta" class="meta">Loading...</div>
+    </div>
 
     <div id="content" class="content" aria-live="polite">Loading project…</div>
   </div>
@@ -106,31 +151,29 @@ function getQueryParam(name){
   return params.get(name);
 }
 
-/* Transform GitHub issue body into safe HTML:
-   - Use marked.js to render markdown
-   - sanitize with DOMPurify
-   - ensure HTML <img> tags and plain image URLs are respected
+/* Render Markdown safely:
+   - Convert HTML <img> -> markdown image tokens so marked will render them
+   - Convert plain image URLs on their own line -> markdown images
+   - Use marked.js to render
+   - Sanitize with DOMPurify (allow only necessary tags/attrs)
 */
 function renderBodyToHtml(md){
   if(!md) return '';
 
-  // Some issue bodies might contain raw HTML <img> tags or github attachment tags.
-  // We'll first convert raw HTML image tags into markdown image tokens so marked renders them.
-  // Example: <img src="https://..."> -> ![](https://...)
   let body = md;
 
-  // Convert HTML <img ... src="..."> to markdown image token so marked will produce an <img>
+  // Convert HTML <img ... src="..."> to markdown image
   body = body.replace(/<img[^>]+src=(?:'|")([^'"]+)(?:'|")[^>]*>/gi, function(_, src){
     return `![](${src})`;
   });
 
-  // Convert plain image URLs (ending with image extension) on their own line into markdown images
+  // Convert plain image URLs on a line to markdown image token
   body = body.replace(/(^|\n)(https?:\/\/\S+\.(?:png|jpe?g|gif|webp|svg))(\s|$)/gi, '\n![]($2)\n');
 
-  // Render markdown to HTML using marked
+  // Render markdown to HTML
   const rendered = marked.parse(body);
 
-  // Sanitize the HTML
+  // Sanitize
   const clean = DOMPurify.sanitize(rendered, {
     ALLOWED_TAGS: ['a','p','img','strong','em','ul','ol','li','pre','code','blockquote','h1','h2','h3','br'],
     ALLOWED_ATTR: ['href','src','alt','title','target','rel']
@@ -150,7 +193,6 @@ function openLightbox(src, caption){
   lbCaption.textContent = caption || '';
   lb.style.display = 'flex';
   lb.setAttribute('aria-hidden','false');
-  // focus for keyboard interaction
   lb.focus();
 }
 
@@ -162,7 +204,6 @@ function closeLightbox(){
 }
 
 lb.addEventListener('click', (e)=>{
-  // clicking outside the image closes
   if(e.target === lb || e.target === lbImg) closeLightbox();
 });
 
@@ -172,7 +213,13 @@ document.addEventListener('keydown', (e)=>{
 
 /* Render issue onto the page */
 function showIssue(issue){
-  document.getElementById('meta').textContent = `Published: ${new Date(issue.created_at).toLocaleDateString()}${(issue.labels||[]).length ? ' • Tags: ' + issue.labels.map(l=>l.name).join(', ') : ''}`;
+  // post title under brand
+  document.getElementById('post-title').textContent = issue.title || '';
+
+  // meta
+  const created = new Date(issue.created_at).toLocaleDateString();
+  const labels = (issue.labels||[]).map(l=>l.name).join(', ');
+  document.getElementById('meta').textContent = `Published: ${created}${labels ? ' • Tags: ' + labels : ''}`;
 
   const html = renderBodyToHtml(issue.body || '');
   document.getElementById('content').innerHTML = html || '<p>(No description)</p>';
@@ -204,7 +251,6 @@ async function loadIssue(){
     const res = await fetch(url);
     if(!res.ok) throw new Error('Failed to fetch issue: ' + res.status);
     const issue = await res.json();
-    // Put a branded title at top (keeps consistent - we already show brand in header)
     document.title = `JnanaDesigns — ${issue.title || 'Project'}`;
     showIssue(issue);
   } catch(err){
