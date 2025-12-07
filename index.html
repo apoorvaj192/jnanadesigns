@@ -218,6 +218,157 @@
   });
   lb.addEventListener('click', ()=> lb.style.display='none');
 </script>
+<script>
+/* GitHub Issues CMS loader
+   - Expects issues in the repo with:
+     - Title = project title
+     - Body = caption/description (first paragraph used)
+     - Image = first image embedded in the issue body (drag-drop image into issue)
+     - Labels = used to determine data-type (use label names: figure, abstract, poster, presentation, btw)
+   - Add this right before </body>. */
+
+(async function(){
+  const owner = 'apoorvaj192';    // your GitHub username
+  const repo  = 'jnanadesigns';   // your repo name
+  const issuesUrl = `https://api.github.com/repos/${owner}/${repo}/issues?state=open&per_page=100`;
+
+  // Helper: extract first image URL from markdown body (pattern: ![alt](url))
+  function extractImageFromMarkdown(md){
+    if(!md) return null;
+    const imgRegex = /!\[.*?\]\((https?:\/\/[^\s)]+)\)/i;
+    const m = md.match(imgRegex);
+    return m ? m[1] : null;
+  }
+
+  // Helper: get first paragraph from markdown body
+  function extractFirstParagraph(md){
+    if(!md) return '';
+    // remove image markdown entirely to avoid duplication
+    let text = md.replace(/!\[.*?\]\((https?:\/\/[^\s)]+)\)/gi, '');
+    // Replace github-style references with nothing
+    text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+    // split by double newline or single newline
+    const parts = text.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
+    if(parts.length === 0) return text.trim().split('\n').slice(0,3).join(' ').trim();
+    return parts[0];
+  }
+
+  // Optional: show a loading line
+  const grid = document.getElementById('grid');
+  const taglineEl = document.getElementById('tagline') || document.createElement('div');
+  if(!taglineEl.id) { taglineEl.id = 'tagline'; grid.parentNode.insertBefore(taglineEl, grid); }
+  taglineEl.textContent = 'Loading projects...';
+
+  try {
+    const res = await fetch(issuesUrl);
+    if(!res.ok) throw new Error('Failed to fetch issues: ' + res.status);
+    const issues = await res.json();
+
+    // Optionally sort by creation date so newest appear first
+    issues.sort((a,b)=> new Date(b.created_at) - new Date(a.created_at));
+
+    // Clear existing static cards (optional)
+    grid.innerHTML = '';
+
+    if(issues.length === 0){
+      grid.innerHTML = '<p style="color:#666">No projects found. Create an Issue to add items to the portfolio.</p>';
+      taglineEl.textContent = '';
+      return;
+    }
+
+    // Map each issue -> card
+    for(const issue of issues){
+      // Skip pull requests (GitHub treats PRs as issues as well)
+      if(issue.pull_request) continue;
+
+      // Determine type from labels (use the first matching label that equals a known type)
+      const labelNames = (issue.labels || []).map(l => l.name.toLowerCase());
+      const knownTypes = ['figure','abstract','poster','presentation','btw'];
+      const type = labelNames.find(l => knownTypes.includes(l)) || 'figure';
+
+      const title = issue.title || 'Untitled';
+      const bodyMd = issue.body || '';
+      const caption = extractFirstParagraph(bodyMd) || '';
+      const image = extractImageFromMarkdown(bodyMd); // might be null
+      const url = issue.html_url; // link to the issue for "Read more"
+
+      // Build card element
+      const art = document.createElement('article');
+      art.className = 'card';
+      art.dataset.type = type;
+
+      // Title element above image
+      const titleEl = document.createElement('p');
+      titleEl.className = 'title';
+      titleEl.textContent = title;
+      art.appendChild(titleEl);
+
+      // Image (if found)
+      if(image){
+        const img = document.createElement('img');
+        img.className = 'thumb';
+        img.src = image;
+        img.alt = title;
+        img.loading = 'lazy';
+        art.appendChild(img);
+      }
+
+      // Caption block
+      const cap = document.createElement('p');
+      cap.className = 'cap';
+      if(caption){
+        // If issue has a link inside body and you want to link "Read", keep plain caption and add link
+        const readLink = document.createElement('a');
+        readLink.href = url;
+        readLink.target = '_blank';
+        readLink.rel = 'noopener';
+        readLink.textContent = ' Read';
+        // set text to caption and append read link
+        cap.textContent = caption;
+        cap.appendChild(document.createTextNode(' '));
+        cap.appendChild(readLink);
+      } else {
+        cap.innerHTML = `<a href="${url}" target="_blank" rel="noopener">Open</a>`;
+      }
+      art.appendChild(cap);
+
+      // Tools / footer small text - optional: first label or created date
+      const tools = document.createElement('p');
+      tools.className = 'tools';
+      tools.textContent = (labelNames.length>0 ? labelNames.join(', ') : '') + ' ';
+      art.appendChild(tools);
+
+      grid.appendChild(art);
+    }
+
+    // Remove "Loading..." tagline and set default tagline text
+    taglineEl.textContent = 'All projects — a full overview of my scientific design work.';
+
+    // Now re-run the existing filter setup (in case filters already exist)
+    (function attachFilters(){
+      const filterBtns = document.querySelectorAll('.filters button');
+      filterBtns.forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          filterBtns.forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          const f = btn.getAttribute('data-filter');
+          // update tagline if needed (you may have tagline object elsewhere)
+          // Show/hide cards
+          document.querySelectorAll('.card').forEach(c=>{
+            c.style.display = (f === 'all' || c.dataset.type === f) ? 'flex' : 'none';
+          });
+        });
+      });
+    })();
+
+  } catch(err){
+    console.error(err);
+    grid.innerHTML = '<p style="color:#c33">Unable to load projects. See console for details.</p>';
+    taglineEl.textContent = '';
+  }
+
+})();
+</script>
 
 </body>
 </html>
