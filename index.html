@@ -166,4 +166,104 @@
 
     <div class="ctas">
       <a class="btn" href="mailto:apoorva@example.com">Email</a>
-      <a cl
+      <a class="btn" href="https://www.linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+      <a class="btn primary" id="download-pdf" href="portfolio.pdf" target="_blank">PDF</a>
+    </div>
+
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- FILTER BUTTONS -->
+    <div class="filters">
+      <button data-filter="all" class="active">All</button>
+      <button data-filter="figure">Figures</button>
+      <button data-filter="abstract">Visual abstracts</button>
+      <button data-filter="poster">Posters</button>
+      <button data-filter="presentation">Presentations</button>
+      <button data-filter="btw">Logbook</button>
+    </div>
+
+    <!-- GRID -->
+    <section class="grid" id="grid">
+
+      <article class="card" data-type="figure">
+        <p class="title">Pyocyanin figure</p>
+        <img class="thumb" src="images/figure1.jpg" loading="lazy">
+        <p class="cap">Designed layout + final art. <a href="#" target="_blank">Published</a></p>
+        <p class="tools">Illustrator, BioRender</p>
+      </article>
+
+      <article class="card" data-type="abstract">
+        <p class="title">Visual abstracts: the soul of witty science</p>
+        <img class="thumb" src="images/visualabstract1.png" loading="lazy">
+        <p class="cap">Single-panel visual story for manuscript. <a href="#" target="_blank">Published</a></p>
+        <p class="tools">Illustrator</p>
+      </article>
+
+      <article class="card" data-type="poster">
+        <p class="title">Posters: Ticket to knowledge and conference swag</p>
+        <img class="thumb" src="images/poster1.jpg" loading="lazy">
+        <p class="cap">Poster layout with microscopy panels.</p>
+        <p class="tools">Inkscape, Illustrator</p>
+      </article>
+
+      <article class="card" data-type="presentation">
+        <p class="title">Presentation: Microsoft FTW</p>
+        <img class="thumb" src="images/presentation1.jpg" loading="lazy">
+        <p class="cap">Slide design for research talk. <a href="#" target="_blank">View</a></p>
+        <p class="tools">Presentation design</p>
+      </article>
+
+      <article class="card" data-type="btw">
+        <p class="title">Logbook: insights and commentary on art + science</p>
+        <img class="thumb" src="images/btw1.jpg" loading="lazy">
+        <p class="cap">Short insights on figure clarity. <a href="#" target="_blank">Read</a></p>
+        <p class="tools">Behind The Work</p>
+      </article>
+
+    </section>
+
+  </div>
+</main>
+
+<div id="lightbox">
+  <img id="lb-img" src="">
+</div>
+
+<footer>
+  © <span id="year"></span> JnanaDesigns — All rights reserved
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Filters
+  document.querySelectorAll('.filters button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.getAttribute('data-filter');
+      document.querySelectorAll('.card').forEach(c=>{
+        c.style.display = (f === 'all' || c.dataset.type === f) ? 'flex' : 'none';
+      });
+    });
+  });
+
+  // Lightbox
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  document.querySelectorAll('.card img').forEach(img=>{
+    img.style.cursor='zoom-in';
+    img.addEventListener('click', e=>{
+      lbImg.src = e.target.src;
+      lb.style.display='flex';
+    });
+  });
+  lb.addEventListener('click', ()=> lb.style.display='none');
+</script>
+
+</body>
+</html>
