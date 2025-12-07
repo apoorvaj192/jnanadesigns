@@ -6,7 +6,6 @@
   <title>Project — JnanaDesigns</title>
   <meta name="description" content="Project detail page for JnanaDesigns portfolio" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,500&display=swap">
-
   <style>
     :root{
       --maxw:980px; --bg:#fbfbfb; --muted:#666; --accent:#0b66ff;
@@ -20,32 +19,14 @@
     .back{font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid #e9e9e9;background:#fff;text-decoration:none;color:inherit}
     .title{font-family:"Playfair Display",serif;font-size:26px;margin:10px 0}
     .meta{color:var(--muted);font-size:14px;margin-bottom:14px}
-
     .images{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:16px}
     .images img{width:100%;height:auto;border-radius:8px;object-fit:cover;border:1px solid #eee}
-
-    .content{
-      background:#fff;padding:18px;border-radius:8px;border:1px solid #eee;
-      font-size:16px;line-height:1.6;
-    }
-
-    /* Improve readability of GitHub-rendered HTML */
-    .content h1,.content h2,.content h3{
-      font-family:"Playfair Display",serif;
-      margin-top:1.2em;
-    }
-    .content p{margin:0.6em 0;}
-    .content ul, .content ol{
-      padding-left:20px;
-      margin:0.6em 0;
-    }
-    .content img{max-width:100%;border-radius:8px;margin:10px 0;border:1px solid #eee}
-
+    .content{background:#fff;padding:18px;border-radius:8px;border:1px solid #eee}
     .labels{margin-top:10px;color:var(--muted);font-size:13px}
     .spinner{color:var(--muted);font-size:15px}
+    @media (max-width:520px){ .title{font-size:20px} }
   </style>
 </head>
-
 <body>
   <div class="wrap" id="app">
     <header>
@@ -54,12 +35,13 @@
     </header>
 
     <div id="main">
-      <p id="loading" class="spinner">Loading project…</p>
+      <p class="spinner" id="loading">Loading project…</p>
     </div>
   </div>
 
 <script>
 (async function(){
+  // CONFIG: set your own username/repo here if different
   const OWNER = 'apoorvaj192';
   const REPO  = 'jnanadesigns';
 
@@ -73,76 +55,73 @@
     return;
   }
 
-  // Fetch Issue
-  async function fetchIssue(){
-    const url = `https://api.github.com/repos/${OWNER}/${REPO}/issues/${issueNumber}`;
-    const res = await fetch(url);
-    if(!res.ok) throw new Error('Issue fetch failed: ' + res.status);
-    return res.json();
-  }
-
-  // Send Markdown to GitHub's renderer
-  async function renderMarkdown(md){
-    const mdApi = "https://api.github.com/markdown";
-    const body = {
-      text: md,
-      mode: "gfm",
-      context: `${OWNER}/${REPO}`
-    };
-    const res = await fetch(mdApi, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
-    });
-    if(!res.ok) throw new Error('Markdown render failed: ' + res.status);
-    return res.text(); // rendered HTML
-  }
-
   try {
-    const issue = await fetchIssue();
+    // Fetch single issue
+    const apiUrl = `https://api.github.com/repos/${OWNER}/${REPO}/issues/${encodeURIComponent(issueNumber)}`;
+    const res = await fetch(apiUrl);
+    if(!res.ok) throw new Error('Unable to fetch project: ' + res.status);
+    const issue = await res.json();
 
+    // Basic fields
     const title = issue.title || 'Untitled';
     const labels = (issue.labels || []).map(l => l.name).join(', ');
     const created = new Date(issue.created_at).toLocaleDateString();
 
-    // Extract image URLs
+    // Extract image URLs from markdown body (all images)
+    const bodyMd = issue.body || '';
     const imgRegex = /!\[.*?\]\((https?:\/\/[^\s)]+)\)/gi;
-    const images = [...issue.body.matchAll(imgRegex)].map(x => x[1]);
+    const images = [];
+    let m;
+    while((m = imgRegex.exec(bodyMd)) !== null) images.push(m[1]);
 
-    // Remove image markdown from main body before rendering
-    const mdForHtml = issue.body.replace(imgRegex, '');
+    // Remove image markdown from body for text rendering
+    const bodyNoImages = bodyMd.replace(imgRegex, '');
 
-    // Render markdown fully
-    const htmlBody = await renderMarkdown(mdForHtml);
+    // Very small markdown -> HTML converter (handles links, bold, italics, lists, paragraphs)
+    function mdToHtml(md){
+      if(!md) return '';
+      // escape HTML
+      let html = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-    // Build HTML
-    let html = `
-      <div class="title">${escapeHtml(title)}</div>
-      <div class="meta">${created} ${labels ? " • " + escapeHtml(labels) : ""}</div>
-    `;
+      // convert headings (only simple)
+      html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+      html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+      html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
 
-    if(images.length){
-      html += `<div class="images">` +
-              images.map(url => `<img src="${url}" alt="Project image">`).join('') +
-              `</div>`;
+      // bold **text**
+      html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+      // italics *text*
+      html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+      // links [text](url)
+      html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/gim, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      // unordered lists
+      html = html.replace(/^\s*-\s+(.*)/gim, '<li>$1</li>');
+      html = html.replace(/(<li>.*<\/li>)/gim, '<ul>$1</ul>');
+      // paragraphs (double newline)
+      html = html.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g,' ')}</p>`).join('');
+      return html;
     }
 
-    html += `<div class="content">${htmlBody}</div>`;
+    // Build the page
+    const titleHtml = `<div class="title">${escapeHtml(title)}</div>`;
+    const metaHtml = `<div class="meta">Published: ${escapeHtml(created)} ${labels ? ' • Tags: ' + escapeHtml(labels) : ''}</div>`;
 
-    target.innerHTML = html;
+    let imagesHtml = '';
+    if(images.length){
+      imagesHtml = '<div class="images">' + images.map(u=>`<img src="${u}" alt="${escapeHtml(title)}">`).join('') + '</div>';
+    }
+
+    const bodyHtml = `<div class="content">${mdToHtml(bodyNoImages)}</div>`;
+
+    target.innerHTML = titleHtml + metaHtml + imagesHtml + bodyHtml;
 
   } catch(err){
     console.error(err);
-    target.innerHTML = `<p style="color:#c33">Error loading project. You can view it on GitHub: 
-      <a href="https://github.com/${OWNER}/${REPO}/issues/${issueNumber}" target="_blank">Open Issue</a></p>`;
+    target.innerHTML = `<p style="color:#c33">Error loading project. Try refreshing, or view it on GitHub: <a href="https://github.com/${OWNER}/${REPO}/issues/${issueNumber}" target="_blank">Open on GitHub</a></p>`;
   }
 
-  function escapeHtml(s){
-    return String(s).replace(/&/g,'&amp;')
-                    .replace(/</g,'&lt;')
-                    .replace(/>/g,'&gt;');
-  }
-
+  // small helper
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 })();
 </script>
 </body>
