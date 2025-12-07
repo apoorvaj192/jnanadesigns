@@ -27,7 +27,7 @@
       position:sticky;
       top:0;
       backdrop-filter: blur(6px);
-      background:#f3fafa;
+      background:#f7f7f7;
       border-bottom:1px solid rgba(11,110,110,0.08);
       z-index:50;
     }
@@ -226,12 +226,12 @@
     const f = active ? active.getAttribute('data-filter') : 'all';
     const q = (document.getElementById('search').value || '').toLowerCase().trim();
     document.getElementById('tagline').textContent = {
-      all: "All projects --> a full overview of my scientific design work.",
-      figure: "Figures --> publication-ready scientific visuals with clarity and precision",
-      abstract: "Visual Abstracts --> the soul of witty science",
-      poster: "Posters --> Impactful science in the span of a tea break!",
-      presentation: "Presentations --> crucial instruments of storytelling, MS FTW!",
-      btw: "BTW --> Behind The Work; Notes on process, creativity, and design decisions."
+      all: "A full overview of my scientific design work.",
+      figure: "Publication-ready scientific visuals with clarity and precision",
+      abstract: "The soul of witty science",
+      poster: "Impactful science communicated in the span of a tea break",
+      presentation: "Crucial instruments of storytelling",
+      btw: "Behind The Work; Notes on teh scientific process, creativity, and design decisions."
     }[f] || '';
 
     document.querySelectorAll('.card').forEach(card=>{
