@@ -355,6 +355,13 @@ searchInput.addEventListener('input', ()=>{
       const art = document.createElement('article');
       art.className = 'card';
       art.dataset.type = type;
+      // Make whole card clickable (optional)
+art.addEventListener('click', (e)=>{
+  // don't trigger when clicking on a link inside card (so Read still works)
+  if(e.target.tagName.toLowerCase() === 'a') return;
+  window.location.href = `./project.html?issue=${issueNumber}`;
+});
+art.style.cursor = 'pointer';
 
       // Title (clickable)
 const titleEl = document.createElement('p');
