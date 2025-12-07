@@ -319,7 +319,7 @@
       if(caption){
         // If issue has a link inside body and you want to link "Read", keep plain caption and add link
         const readLink = document.createElement('a');
-        readLink.href = url;
+        readLink.href = `./project.html?issue=${issue.number}`;
         readLink.target = '_blank';
         readLink.rel = 'noopener';
         readLink.textContent = ' Read';
