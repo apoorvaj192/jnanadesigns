@@ -26,12 +26,14 @@
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:#111;line-height:1.45;-webkit-font-smoothing:antialiased}
     header{
-      position:sticky;
-      top:0;
-      backdrop-filter: blur(6px);
-      background:#f3fafa;
-      border-bottom:1px solid rgba(11,110,110,0.08);
-      z-index:50;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    backdrop-filter: blur(6px);
+    background:#f3fafa;
+    border-bottom:1px solid rgba(11,110,110,0.08);
+    z-index:999;
     }
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px}
     .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -46,7 +48,7 @@
     .hero{ padding:14px 0 8px;color:var(--muted);font-size:15px;max-width:760px }
     .meta{ font-size:13px;color:var(--muted);margin-top:6px }
 
-    main{ max-width:var(--maxw);margin:18px auto;padding:0 18px 60px }
+    main{ max-width:var(--maxw);margin:18px auto;padding:220px 18px 60px }
 
     #search{ width:100%; padding:10px; border:1px solid #efefef; border-radius:8px; margin-bottom:12px; font-size:14px; background:#fff }
     .filters{ display:flex; gap:8px; margin:12px 0 18px; flex-wrap:wrap }
