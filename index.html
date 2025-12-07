@@ -54,6 +54,34 @@
       font-size:13px;
     }
     .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* pastel category colours */
+.filters button[data-filter="figure"]{
+  background:#f9f3f3;
+  border-color:#f0dede;
+}
+.filters button[data-filter="abstract"]{
+  background:#f3fbf7;
+  border-color:#d8efe0;
+}
+.filters button[data-filter="poster"]{
+  background:#fcf7f3;
+  border-color:#f2e7d6;
+}
+.filters button[data-filter="presentation"]{
+  background:#f5f7ff;
+  border-color:#dbe1ff;
+}
+.filters button[data-filter="btw"]{
+  background:#f9f5ff;
+  border-color:#eadffb;
+}
+
+/* active state always overrides pastel */
+.filters button.active{
+  background:var(--accent);
+  color:#fff;
+  border-color:var(--accent);
+}
 
     /* grid */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
@@ -288,7 +316,7 @@ searchInput.addEventListener('input', ()=>{
   const grid = document.getElementById('grid');
   const taglineEl = document.getElementById('tagline') || document.createElement('div');
   if(!taglineEl.id) { taglineEl.id = 'tagline'; grid.parentNode.insertBefore(taglineEl, grid); }
-  taglineEl.textContent = 'Loading projects...';
+  taglineEl.textContent = '';
 
   try {
     const res = await fetch(issuesUrl);
@@ -328,11 +356,18 @@ searchInput.addEventListener('input', ()=>{
       art.className = 'card';
       art.dataset.type = type;
 
-      // Title element above image
-      const titleEl = document.createElement('p');
-      titleEl.className = 'title';
-      titleEl.textContent = title;
-      art.appendChild(titleEl);
+      // Title (clickable)
+const titleEl = document.createElement('p');
+titleEl.className = 'title';
+const titleLink = document.createElement('a');
+titleLink.href = `./project.html?issue=${issue.number}`;
+titleLink.textContent = title;
+titleLink.style.color = 'inherit';
+titleLink.style.textDecoration = 'none';
+titleLink.style.display = 'inline-block';
+titleEl.appendChild(titleLink);
+art.appendChild(titleEl);
+
 
       // Image (if found)
       if(image){
