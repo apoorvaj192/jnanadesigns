@@ -13,6 +13,7 @@
   <style>
     /* ---------- Polished Option C: Editorial / Teal-tinted (with Fuse + gallery) ---------- */
     :root{
+      --header-height: 230px;
       --maxw:980px;
       --bg:#ffffff;
       --card:#ffffff;
@@ -48,7 +49,7 @@
     .hero{ padding:14px 0 8px;color:var(--muted);font-size:15px;max-width:760px }
     .meta{ font-size:13px;color:var(--muted);margin-top:6px }
 
-    main{ max-width:var(--maxw);margin:18px auto;padding:220px 18px 60px }
+    main{ max-width:var(--maxw);margin:18px auto;padding:calc(var(--header-height) + 20px) 18px 60px;}
 
     #search{ width:100%; padding:10px; border:1px solid #efefef; border-radius:8px; margin-bottom:12px; font-size:14px; background:#fff }
     .filters{ display:flex; gap:8px; margin:12px 0 18px; flex-wrap:wrap }
@@ -551,6 +552,16 @@
   }
 
 })();
+</script>
+  <script>
+function updateHeaderHeight() {
+  const header = document.querySelector("header");
+  const h = header.offsetHeight;
+  document.documentElement.style.setProperty("--header-height", h + "px");
+}
+
+window.addEventListener("load", updateHeaderHeight);
+window.addEventListener("resize", updateHeaderHeight);
 </script>
 
 </body>
